@@ -34,3 +34,7 @@ a ;;                    (* This will output the type and value of the variable a
 a + 5 ;;                (* It will display the value and type of the expression 8 + 5
  - : int = 13              It prints 13 as expected *)
 
+a +. 9.1 ;;             (* This operation will raise an error as it is a float operation \
+                           and a is of type int 
+Error:This expression has type int but an expression was expected of type float *)
+
