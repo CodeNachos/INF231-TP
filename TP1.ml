@@ -21,3 +21,16 @@ value returned by a given expression is false.
    Q 12. As expected for the third expression, an assertion is raised
 *)
 
+(*
+   EXERCICE 2.1.4
+   Q31.
+*)
+
+let a:int = 8 ;;        (* Declaring int a *)
+
+a ;;                    (* This will output the type and value of the variable a 
+ - : int = 8               As expected it prints the type and value of a*)
+
+a + 5 ;;                (* It will display the value and type of the expression 8 + 5
+ - : int = 13              It prints 13 as expected *)
+
