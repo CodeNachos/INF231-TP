@@ -1,11 +1,23 @@
-(*EXERCICE 1.2 9
-somme3 : int -> int -> int -> int 10
-Sémantique : somme de trois entiers 11
-Algorithme : utilisation de + 12
+(* 
+   EXERCICE 2.1.3 
+   Q11.
 *)
-let somme3 (a:int) (b:int) (c:int) : int = 
-a + b + c 
-(* Tests : *) 
-let - = assert ((somme3 1 2 3) = 6) (* cas général *) 
-let - = assert ((somme3 (-1) 2 (-1)) = 0) (* entiers négatifs *) 
-let - = assert ((somme3 0 0 0) = 0) (* cas zéro *)
+
+assert ((5=3) = false);;        (* This expression will output nothing (unit) \
+ - : unit = ()                     So the expression is correct *)
+
+assert ((5=5) = true);;         (* This expression will output nothing (unit) \
+ - : unit  = ()                    So the expression is correct *)
+
+assert ((5=3) = true);;         (* This expression will raise an exception as 5 <> 3 \
+Exception: Assert_failure ("//toplevel//", 1, 0). *)
+
+(* 
+   One can conclude that the expression "assert " will raise an error when the boolean \
+value returned by a given expression is false.
+*)
+
+(* 
+   Q 12. As expected for the third expression, an assertion is raised
+*)
+
