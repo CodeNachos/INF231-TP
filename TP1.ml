@@ -7,8 +7,61 @@ Rafael MASCARENHAS <Rafael.Mascarenhas@etu.univ-grenoble-alpes.fr> /
 *)
 
 
+(*EXERCICE 2.1.1
+Q1/Trying different commands*)
+24;; 
+3+4;; (* Does the sum of 3 and 4 and since they are both int it computes an int which is 7*)  
+3+5.3;; (*This doesn't work because OCaml sees the + first and then the type of the object on the left so an int and expect the next object to be an int but it is a float so the error is Error: This expression has type float but an expression was expected of type int*)
+6.1+8.2;;(*This time it doesn't work because the object are both floats but + only wotks for int objects otherwise it's +.*)
+3.2+.6.1;;(*This is what we said before so it works and returns 9.3*)
+6+.5;;(*This time 6+.5 is not the addition of 2 floats with a +. but actually it thinks that +.5 is a float (which is then 0.5) but since 6 is an int the 2 objects are different and the + only does int + int. Error: This expression has type int but an expression was expected of type float*)
+6.+.5.;;(*This gives 11. because with a have two float 6. and 5. and we have the function +. so it adds two floats which is the case*)
 
-___________________________________
+(*Q2/Trying different commands*)
+’f’;; (*Returns the character f*)
+’5’;; (*Returns the character 5*)
+’3’+4;; (* + only works for int but '3' is a character. Error: This expression has type char but an expression was expected of type int *)
+’3+4’;; (* 'char' is only used for one single character but here we have multiple characters comprehends something else. Error: Invalid literal 4'*)
+’x’;; (*Returns the character x*)
+x;;(*We didn't define x so it is an unbound value that gives an error. Error: Unbound value x*)
+
+(*Q3/Trying different commands*)
+true;;(*Returns a bool which is true*)
+false;;(*Same but with false*)
+true && false;;(*Returns false because of the table of truth as expected*)
+true || false;;(*Returns true as expected because of the table of truth*)
+not(false);;(*Returns the opposite of false so true*)
+
+(*Q4/Trying different commands*)
+4 + 3 * 2 ;;(*Does the multiplication first and then add the integer on the left side of the + and the new integer on the right so 4+6 and gives 10*)
+4 + 3 / 2 ;;(*The function / gives the integer part of the divison of the 2 integer so here 3/2 is 1 and then 4+1 wotks and gives 5(functions will be explained later on)*)
+(4 + 3) / 2 ;;(*Does first 4+3 which works and makes 7 and divide this integer by the other one so 2 but as we said it gives the integer part so 3*)
+4 + 3 /. 2 ;;(*It will first check the division but here we have /. so it is dividing 2 floats but 3 isn't one and the command will break by seeing it's an integer before seeing something else.Error: This expression has type int but an expression was expected of type float*)
+(4. +. 3.) /. 2. ;;(*All of this works because what's in parentheses adds two floats with +. so float -> float -> float and then divide the float by another float with /. so float -> float -> float which is then the cases and gives 3.5*)
+10 mod 5 ;;(*Gives the rest of the division of 10/5 which is 0*)
+10 mod 3 ;;(*Gives the rest of the division of 10/3 which is 1*)
+10 mod 0 ;;(*Tries to give the rest of the division of 10/0 which doesn't exist but it doesn't raise an error and only show Exception: Division_by_zero.*)
+
+(*Q4/Conclusion
+
+For the function /
+/ : int -> int -> int 
+Semantic : The function takes 2 int and returns the integer part of the division of the two int (which is then an int)
+Algorithm : Use of / 
+If we do a division by 0 it raises the fact that it cannot do it by saying it's an exception since we can't divide by 0
+
+For the function /.
+/. : float -> float -> float 
+Semantic : The function takes 2 float and returns the division of the two float as a float
+Algorithm : Use of /.
+If we do a division by 0. it raises the fact that it cannot do it by saying it's an exception since we can't divide by 0
+
+For the function mod
+mod : int -> int -> int 
+Semantic : The function takes 2 int and returns the rest of the division of the two int (which is an int)
+Algorithm : Use of mod
+If we do a mod 0 it raises the fact that it cannot do it by saying it's an exception since we can't divide by 0
+*)
 
 (*exercice 2.1.2*)
 (*Q.5*)
@@ -101,9 +154,13 @@ a +. 9.1 ;;             (* This operation will raise an error as it is a float o
                            and a is of type int 
 Error:This expression has type int but an expression was expected of type float *)
 
-
-______________________________________
-
+(*EXERCICE 2.1.5
+Q14*)
+let a:int = 8;; (*We set the value of a*)
+if a < 10 then true else a;; (*The rule with an if is that the type that the function will give if the condition is true should be the same as the one it will give if it doesn't complete it but here in the if it returns true so the other one in then should be also a bool but a is an int so it doesn't work*)
+if a < 10 then a else false;; (*As we said before the output should be of the same of the same type for every possibilities so this one doesn't work because a is an int and so we should also have an int after the then which isn't the case*)
+if a < 10 then a;; (*Another rule in the if is that an else is mandatory because the condition cannot always be met (even if here it is) and so OCaml will simply not run it if there is no then in the function or the then as to be of type unit in which case it will always give unit*)
+if a < 10 then true else false;; (*This meets all the rules*)
 
 
 (*2.2.1*)
@@ -156,3 +213,44 @@ let x=10 in
 let x=10 in let x=3 and y=x+4 in x+y + x ;;
 let x = 5 and y = x+5;;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(*EXERCISE 2.3
+Q1*)
+let x=3 and y=4 in x+y ;;(*This function will just create local variables in x+y that are x=3 and y=4 but then this function won't have any name so we can't call it but it gives 7. Otherwise we should write let name = let x=3 and y=4 in x+y;; in which case it will have the name "name"*)
+let x=3 and y=x+4 in x+y ;;(*x is not defined because it runs parallelly and so x is not yet defined and it just raises an error since y uses x. Error: Unbound value x*)
+let x=10 in
+let x=3 and y=x+4 in
+x+y ;; (*This time the function will define x=10 in the function y=x+4 because it's nested inside so yis now 14, then we have the other function where x is now 3 because this x is nested inside the function x+y so 3+14=17* but be aware because all the variable are local and the function as no name*)
+let x=10 in
+(let x=3 and y=x+4 in x+y) + x ;; (*Since x=10 is in the whole expression it is nested inside y=x+4 and x at the end of the line and the x=3 is only used in the parantheses as in x+y so if we do the whole operation we have 3+(10+4)+10*)
+let x=10 in
+let x=3 and y=x+4 in x+y + x ;;(*Since x=10 in the whole expression then it is being used and so it sued in y=x+4 and so y is 14 but then the x=3 belongs to the x+y+x because we have an in after so we have 3+14+3 which is 20*)
+x ;;(*We didn't specify x in the end because all the variables were local so it's an unbound value*)
+(*We can conclude that it depends on the way the expression is nested, the parentheses and the positions of the ins determine the values that a certain variable will take *)
