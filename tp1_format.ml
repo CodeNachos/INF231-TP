@@ -251,8 +251,8 @@ if a < 10 then a else false;;       (* As we said before the output should be of
 
 if a < 10 then a;;                  (* Another rule in the conditional 'if' is that even if we don't directly insert an 'else' bloc, for Ocaml is still exists,
                                       and has a 'Unit' type. In this case, we're returning an integer if the condition is true and a unit type if it's false, like we had
-                                      stated, would raise an error. (If we're returning a 'unit' type when the condition is true then and only then we can omit the insertion
-                                      of an 'else' bloc.*)
+                                      stated, this will raise an error. (If we're returning a 'unit' type when the condition is true then and only then we can omit
+                                      the insertion  of an 'else' bloc.*)
 
 if a < 10 then true else false;;    (*This meets all the rules*)
 
