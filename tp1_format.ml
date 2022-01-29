@@ -141,7 +141,7 @@ true<false;;    (* Logically, false is expected. *)
 
 4<false;;       (* An error is expected since we're comparing two different types with each other. *)
 
-'4'<'6';;       (* The characters are converted into ASCII code, so naturally the asnwer is true. *)
+'4'<'6';;       (* The characters are converted into ASCII code, so naturally the answer is true. *)
 
 2>=3;;          (* False is logically expected. *)
 
@@ -341,30 +341,30 @@ let x = 5 and y = x+5;;
    EXERCISE 2.3
    Q1
 *)
-let x=3 and y=4 in x+y ;;           (* This function will just create local variables in x+y that are x=3 and y=4 but \
-                                    then this function won't have any name so we can't call it but it gives 7. \
+let x=3 and y=4 in x+y ;;           (* This function will just create local variables in x+y that are x=3 and y=4 however \
+                                    it is important to note that this function won't have any name so it is not callabale, but it still returns a value, which is 7. \
                                     Otherwise we should write let name = let x=3 and y=4 in x+y;; in which case it \
                                     will have the name "name" *)
 
 let x=3 and y=x+4 in x+y ;;         (* x is not defined because it runs parallelly and so x is not yet defined and it \
                                     just raises an error since y uses x. Error: Unbound value x *)
 
-let x=10 in                         (* This time the function will define x=10 in the function y=x+4 because it's *)
-  let x=3 and y=x+4 in              (* nested inside so yis now 14, then we have the other function where x is now 3 *)
-    x+y                             (* because this x is nested inside the function x+y so 3+14=17* but be aware *)
-;;                                  (* because all the variable are local and the function as no name *)
+let x=10 in                         (* This time the function will define x=10 in the function y=x+4 because like we stated the program runs parallely *)
+  let x=3 and y=x+4 in              (*  so x=3 is not defined in y=x+4 but since x=10 is nested inside so y is now 14, then we have the other function where x is now 3 *)
+    x+y                             (* because this x is nested inside the function x+y so 3+14=17* but we should remember that *)
+;;                                  (* the function is not callable because all the variable are local and the function has no name *)
 
 
-let x=10 in                         (* Since x=10 is in the whole expression it is nested inside y=x+4 and x at the *)
-  (let x=3 and y=x+4 in x+y) + x    (* end of the line and the x=3 is only used in the parantheses as in x+y so if we *)
-;;                                  (* do the whole operation we have 3+(10+4)+10 *)
+let x=10 in                         (* Essentially, it is the same principle as the last function, just that there are parenthesis that help determine which *)
+  (let x=3 and y=x+4 in x+y) + x    (* expression is nested in another. For instance, thanks to the parenthesis, x=10 is nested in the expression between parenthesis *)
+;;                                  (* and in "+x" that is at the end of the expression. We therefore obtain 17 (works the same as the function above) + 10 which is 27 *)
 
-let x=10 in                         (* Since x=10 in the whole expression then it is being used and so it sued in *)
-  let x=3 and y=x+4 in x+y + x      (* y=x+4 and so y is 14 but then the x=3 belongs to the x+y+x because we have an *)
-;;                                  (* in after so we have 3+14+3 which is 20 *)
+let x=10 in                         (*Now we get to observe how the output differs (from the previous function) with the removal of the parenthesis. *)
+  let x=3 and y=x+4 in x+y + x      (* Now, Ocaml sees that the initial x is nested in let x=3 and y=x+4 (however, like we stated, the program runs parallely *)
+;;                                  (* so the value of x here is 10), and now x = 3 is defined and will be nested in x+y+x, which is why we get 20. *)
 
 x ;;                                (* We didn't specify x in the end because all the variables were local so it's an \
                                     unbound value *)
 
-(* We can conclude that it depends on the way the expression is nested, the parentheses and the positions of the \
-keyword 'in' determine the values that a certain variable will take *)
+(* We can conclude that the output of a function can depend on: the way the expression (of the function) is nested and positions of the parentheses inside  \
+the expression. *)
