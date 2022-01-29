@@ -321,22 +321,85 @@ assert ((max2 '4' 7) = 7) ;;    (* We get an Error, due to different types being
     Q.5
 *)
 
-let max3_vl (a:int)(b:int)(c:int):int = if a>=b && a>=c then a else if b>=a && b>=c then b else (*c>=a && c>=b*) c;;
+let max3_v1 (a:int)(b:int)(c:int):int =
+   if a>=b && a>=c then a 
+   else if b>=a && b>=c then b 
+   else c   (*c>=a && c>=b*) 
+;;
 
-(max3_vl) 14 16 10;;  (* Test with three different values. *)
-(max3_vl) 15 10 10;;  (* Test with two different values. *)
-(max3_vl) 10 10 10;;  (* Test with same numbers *)
+(max3_v1) (-2) 0 2;;  (* Test with different positive, negatif and null values. *)
+(* - : int = 2 *)
+(max3_v1) 14 16 10;;  (* Test with three different values. *)
+(* - : int = 16 *)
+(max3_v1) 15 10 10;;  (* Test with two different values. *)
+(* - : int = 15 *)
+(max3_v1) 10 10 10;;  (* Test with same numbers *)
+(* - : int = 10 *)
 
-let x=10 in let x = 3 and y = x+4 in x+y;;
+(* Q.6 *)
 
-let x=10 in
-  (let x=3 and y=x+4 in x+y) + x ;;
+let max3_v2 (a:int) (b:int) (c:int) :int =
+	if a>b then
+		if a>c then a else c
+	else
+		if b > c then b else c
+;;
 
-let x=10 in 
-  let x=3 and y=x+4 in 
-    x+y + x ;;
+(max3_v2) (-2) 0 2;;  (* Test with different positive, negatif and null values. *)
+(* - : int = 2 *)
+(max3_v2) 14 16 10;;  (* Test with three different values. *)
+(* - : int = 16 *)
+(max3_v2) 15 10 10;;  (* Test with two different values. *)
+(* - : int = 15 *)
+(max3_v2) 10 10 10;;  (* Test with same numbers *)
+(* - : int = 10 *)
 
-let x = 5 and y = x+5;;
+(* Q.7 *)
+
+let max3_v3 (a:int) (b:int) (c:int) :int =
+	max2 a (max2 b c)
+;;	
+
+(max3_v3) (-2) 0 2;;  (* Test with different positive, negatif and null values. *)
+(* - : int = 2 *)
+(max3_v3) 14 16 10;;  (* Test with three different values. *)
+(* - : int = 16 *)
+(max3_v3) 15 10 10;;  (* Test with two different values. *)
+(* - : int = 15 *)
+(max3_v3) 10 10 10;;  (* Test with same numbers *)
+(* - : int = 10 *)
+
+(* Q.8 *)
+
+let max3_v4 (a:int) (b:int) (c:int) :int =
+	let m=max2 b c in
+		max2 a m
+;;
+
+(max3_v4) (-2) 0 2;;  (* Test with different positive, negatif and null values. *)
+(* - : int = 2 *)
+(max3_v4) 14 16 10;;  (* Test with three different values. *)
+(* - : int = 16 *)
+(max3_v4) 15 10 10;;  (* Test with two different values. *)
+(* - : int = 15 *)
+(max3_v4) 10 10 10;;  (* Test with same numbers *)
+(* - : int = 10 *)
+
+(* Q.9 *)
+
+let max3_v4prime (a:int) (b:int) (c:int) :int =
+	let m=if b>c then b else c in
+		if a>m then a else m
+;;
+
+(max3_v4prime) (-2) 0 2;;  (* Test with different positive, negatif and null values. *)
+(* - : int = 2 *)
+(max3_v4prime) 14 16 10;;  (* Test with three different values. *)
+(* - : int = 16 *)
+(max3_v4prime) 15 10 10;;  (* Test with two different values. *)
+(* - : int = 15 *)
+(max3_v4prime) 10 10 10;;  (* Test with same numbers *)
+(* - : int = 10 *)
 
 (*
    EXERCISE 2.3
