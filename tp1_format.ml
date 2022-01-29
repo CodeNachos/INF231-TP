@@ -62,21 +62,21 @@ not(false);;      (* Returns the opposite of false so true *)
 
 (* Q4 Trying different commands *)
 
-4 + 3 * 2 ;;          (* Does the multiplication first and then add the integer on the left side of the + and the new \
+4 + 3 * 2 ;;          (* Does the multiplication first and then adds the integer on the left side of the + and the new \
                       integer on the right so 4+6 and gives 10 *)
 
-4 + 3 / 2 ;;          (* The function / gives the integer part of the divison of the 2 integer so here 3/2 is 1 and \
-                      then 4+1 wotks and gives 5(functions will be explained later on) *)
+4 + 3 / 2 ;;          (* The function '/' gives the integer part of the divison of 2 integers so here 3/2 is 1 and \
+                      then 4+1 works and gives 5 (functions will be explained later on) *)
 
-(4 + 3) / 2 ;;        (* Does first 4+3 which works and makes 7 and divide this integer by the other one so 2 but as \
+(4 + 3) / 2 ;;        (* Does first 4+3 which works and makes 7 and divides this integer by the other one so 2 but as \
                       we said it gives the integer part so 3 *)
 
-4 + 3 /. 2 ;;         (* It will first check the division but here we have /. so it is dividing 2 floats but 3 isn't \
+4 + 3 /. 2 ;;         (* It will first check the division but here we have '/.' so it is dividing 2 floats but 3 isn't \
                       one and the command will break by seeing it's an integer before seeing something else. \
                       Error: This expression has type int but an expression was expected of type float *)
 (4. +. 3.) /. 2. ;;   (* All of this works because what's in parentheses adds two floats with +. \ 
-                      so float -> float -> float and then divide the float by another float with /. \
-                      so float -> float -> float which is then the cases and gives 3.5 *)
+                      so float -> float -> float and then divides the float by another float with '/.' \
+                      so float -> float -> float which is the case and gives 3.5 *)
 
 10 mod 5 ;;           (* Gives the rest of the division of 10/5 which is 0 *)
 
@@ -91,19 +91,19 @@ Q4/Conclusion
 
 For the function /
 (/) : int -> int -> int 
-Semantic : The function takes 2 int and returns the integer part of the division of the two int (which is then an int)
+Semantic : The function takes 2 integers and returns the integer part of the division of the two ints (which is then an int)
 Algorithm : Use of (/)
-If we do a division by 0 it raises the fact that it cannot do it by saying it's an exception since we can't divide by 0
+If we do a division by 0 it raises the fact that it can not execute the operation by saying it's an exception since we can't divide by 0
 
 For the function (/.)
 (/.) : float -> float -> float 
-Semantic : The function takes 2 float and returns the division of the two float as a float
+Semantic : The function takes 2 floats and returns the division of the two floats as a float
 Algorithm : Use of (/.)
 If we do a division by 0. it raises the fact that it cannot do it by saying it's an exception since we can't divide by 0
 
 For the function mod
 mod : int -> int -> int 
-Semantic : The function takes 2 int and returns the rest of the division of the two int (which is an int)
+Semantic : The function takes 2 ints and returns the rest of the division of the two ints (which is an int)
 Algorithm : Use of mod
 If we do a mod 0 it raises the fact that it cannot do it by saying it's an exception since we can't divide by 0
 
@@ -132,7 +132,7 @@ false = false;;   (* Essentially, we're comparing false to false, which is true 
 
 2<3;;           (* A boolean with value 'true' is expected since 2 is smaller than three. *)
 
-'e'<'t';;       (* A boolean with value 'true' is expected since it respects the comparaison respects alphabetical \
+'e'<'t';;       (* A boolean with value 'true' is expected since it respects the comparaison respects the alphabetical \
                 order. *)
 
 false<true;;    (* With true being 1 and false being 0, the expression is true*)
@@ -145,7 +145,8 @@ true<false;;    (* Logically, false is expected. *)
 
 2>=3;;          (* False is logically expected. *)
 
-2> =3;;         (* We get a syntax error since there is no defined operator. *)
+2> =3;;         (* We get a syntax error since Ocaml considers that there is nothing to execute, due to the space, Ocaml sees '2>' and '=3' as two different operations and
+                  is therefore waiting for another argument (for both expressions) in order to execute the program. *)
 
 2<>2;;          (* We get false since 2 is equal to 2. *)
 
@@ -239,19 +240,19 @@ Error:This expression has type int but an expression was expected of type float 
 
 let a:int = 8;;                     (* We set the value of a*)
 
-if a < 10 then true else a;;        (* The rule with an if is that the type that the function will give if the \
-                                    condition is true should be the same as the one it will give if it doesn't \
-                                    complete it but here in the if it returns true so the other one in then should be \
-                                    also a bool but a is an int so it doesn't work *)
+if a < 10 then true else a;;        (* The rule with the conditional 'if' is that the type that the function will output if the \
+                                    condition is true should be the same as the one it will output if the condition \
+                                     is false. Here the condition is true and so we decided that in this case the function should return 'true' (a boolean),
+                                     However, the issue is that in the 'else' bloc, we return an integer, which is not a boolean type.*)
 
-if a < 10 then a else false;;       (* As we said before the output should be of the same of the same type for every \
-                                    possibilities so this one doesn't work because a is an int and so we should also \
-                                    have an int after the then which isn't the case *)
+if a < 10 then a else false;;       (* As we said before the output should be of the same type for every \
+                                    possibility so this one doesn't work because 'a' is an int and so we should also \
+                                    return an int in the 'else' bloc, which isn't the case. *)
 
-if a < 10 then a;;                  (* Another rule in the if is that an else is mandatory because the condition \
-                                    cannot always be met (even if here it is) and so OCaml will simply not run it if \
-                                    there is no then in the function or the then as to be of type unit in which case \
-                                    it will always give unit *)
+if a < 10 then a;;                  (* Another rule in the conditional 'if' is that even if we don't directly insert an 'else' bloc, for Ocaml is still exists,
+                                      and has a 'Unit' type. In this case, we're returning an integer if the condition is true and a unit type if it's false, like we had
+                                      stated, would raise an error. (If we're returning a 'unit' type when the condition is true then and only then we can omit the insertion
+                                      of an 'else' bloc.*)
 
 if a < 10 then true else false;;    (*This meets all the rules*)
 
@@ -273,9 +274,9 @@ abs;;
 
 (*
 Specification for abs:
-  - Profile : abs: int -> int
+  - Profile : abs: int -> int (Goes from the set of integers to the set of natural numbers)
   - Semantique : The function abs takes a single integer n as parameter. If n>0, then the function return n,
-    if n<0 then the function return -n and if n=0, then the function returns 0.
+    if n<0 then the function returns -n and if n=0, then the function returns 0.
 *)
 
 (* Tests for function abs: *)
