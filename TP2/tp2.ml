@@ -25,3 +25,72 @@ monEt false true ;; (*This returns false because it checks first the left object
 (*Conclusion*)
 (*We can conclude that when we call a function, it first evaluates the parameters that we putted before entering the function so if there is an error in one of the paramater
   ,which is our case with monEt (b <> 0) (a mod b=0) because a mod b raises an error, OCaml will just say there is an error and won't execute the function *)
+
+(*
+ EXERCICE 2.6
+ Q1.
+*)
+
+(* DEFINING FUNCTIONS *)
+
+let max2 (x:int) (y:int): int =
+        (abs(x-y)+(x+y))/2
+;;
+
+let min2 (x:int) (y:int): int =
+        if max2 x y = x then y else x
+;;
+
+let max4 (a:int)(b:int) (c:int) (d:int): int =
+        max2 (max2 a b) (max2 c d)
+;;
+
+let min4 (a:int) (b:int) (c:int) (d:int): int =
+        min2 (min2 a b) (min2 c d)
+;;
+
+let moyol (a:int) (b:int) (c:int) (d:int): float =
+        let max = max4 a b c d and min = min4 a b c d in
+                float_of_int((a+b+c+d)-(max+min)) /. 2.;;
+;;
+
+(* Q2. *)
+
+(* FONCTION TESTS *)
+
+(* test max2 *)
+max2 0 0;;
+max2 1 0;;
+max2 10 5;;
+max2 1 (-1);;
+max2 (-1) (-2);;
+
+(* test min2 *)
+min2 0 0;;
+min2 1 0;;
+min2 10 5;;
+min2 1 (-1);;
+min2 (-1) (-2);;
+
+(* test min4 *)
+min4 0 0 0 0;;
+min4 1 0 1 0;;
+min4 1 1 0 0;;
+min4 10 5 2 3;;
+min4 1 (-1) 1 (-1);;
+min4 (-1) (-2) (-3) (-2);;
+
+(* test max5 *)
+max4 0 0 0 0;;
+max4 1 0 1 0;;
+max4 1 1 0 0;;
+max4 10 5 2 3;;
+max4 1 (-1) 1 (-1);;
+max4 (-1) (-2) (-3) (-2);;
+
+(* test moyol *)
+moyol 0 0 0 0;;
+moyol 1 0 0 1;;
+moyol 20 5 7 48;;
+moyol (-1) 0 (-1) 0;;
+moyol (-3) (-56) (-14) (-10);;
