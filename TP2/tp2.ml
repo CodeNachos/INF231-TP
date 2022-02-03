@@ -1,3 +1,10 @@
+(* -----------------------------------------------------------------------
+   inf201-ABDELKADER-DOKTORCIK-MASCARENHAS-TP2.ml : cr exercices TP no2
+   Youssef ABDELKADER <Youssef.Abdelkader@etu.univ-grenoble-alpes.fr>     \
+   Maxcence DOKTORCIK <Maxcence.Doktorcik@etu.univ-grenoble-alpes.fr>      > Groupe Ocaml_best_camel
+   Rafael MASCARENHAS Couillet <Rafael.Mascarenhas@etu.grenoble-alpes.fr> /
+   --------------------------------------------------------------------------*)
+
 (*EXERCICE 2.4*)
 
 (*Q1/*)
@@ -25,6 +32,112 @@ monEt false true ;; (*This returns false because it checks first the left object
 (*Conclusion*)
 (*We can conclude that when we call a function, it first evaluates the parameters that we putted before entering the function so if there is an error in one of the paramater
   ,which is our case with monEt (b <> 0) (a mod b=0) because a mod b raises an error, OCaml will just say there is an error and won't execute the function *)
+
+
+
+(* EXERCICE : 2.5 Moyenne de deux entiers*)
+
+
+(*2.5.1 Types numériques:entiers (int) et réels (float) *)
+
+(*Q.1*)
+3.5;; (*For '3.5', we get that the type of this value is a float*)
+3,5;; (*For '3,5', we get that the type of this value is an int*int, so a tuple essentially.*)
+(4+3)/2;; (*We obtain 3 as a result, which is of type int*)
+
+(*Specification for the operator (+):
+  Profil = (+) : int -> int -> int
+  Semantique = This function computes the sum between two integers, and returns an int which is the
+  result of their sum.
+  Examples :
+            (+) 2 3 = 5
+            (+) -2 5 = 3
+            (+) 0 8 = 8 *)
+
+(*Specification for the operator (/):
+  Profile = (/) : int -> int -> int
+  Semantique = This function computes the division between two integers, and returns an int which is
+  the floor of the result of the division.
+  Examples=
+            (/) 6/3 = 2
+            (/) 7/2 = 3
+            (/) 0/4 = 0 *)
+
+(*Q.2*)
+
+(*(4+3) /.2;;*) (*Error: Ocaml expected only floats instead of integers due to the operator (/.)*)
+(*(4. + 3.) /.2;;*) (*Error: Ocaml expected only integers instead of floats due to the operator (+) *)
+(*(4.0 +. 3.0) /.2;;*) (*Error: Ocaml expected only floats instead of integers due to the operators (+) and 
+(/) *)
+
+(4.0 +. 3.0) /.2. ;; 
+(*This operation functions properly because all operators and values are of the
+same type *)
+
+(* Specification for (+.):
+   Profile = (+.): float -> float -> float
+   Semantique = Computes the sum between two floats, and returns a single float which is the result of 
+   the sum of both floats.
+   Examples = 
+          (+.) 2. +. 5. = 7.
+          (+.) 3.5 + 8. = 11.5
+          (+.) 4.3 +. 2.6 = 6.9 *)
+
+(* Specification for (/.):
+   Profile = (/.): float -> float -> float
+   Semantique = Computes the division between two floats, and returns a single float which is the result
+   of the division between both floats.
+   Examples = 
+            (/.) 4. /. 2. = 2.
+            (/.) 7. /. 2. = 3.5
+            (/.) 0. /. 3434.3 = 0. *)
+
+
+
+(*2.5.2 Fonctions de conversion*)
+
+
+(*Specification 1:
+  Profil = moyenne : Z → Z → R
+  Semantique = (moyenne 𝑎 𝑏) est la moyenne de 𝑎 et 𝑏.
+  Realisation 1:
+  Algorithme = La moyenne est le milieu du segment [a,b] *)
+(*Implementation : *)
+(*let moyenne (a:int) (b:int) : float =
+  (a +. b) /. 2.0;; *)
+(*There seems to be an error inside the function, we're adding an ints with floats which
+  is prohibited by Ocaml.*)
+
+(*Q.3*)
+
+(*Profile = float_of_int: int -> float *)
+float_of_int (3);; (*We obtain 3., which makes sense since we converted the integer 3 to a float.*)
+(*float_of_int 3.4;;*) 
+(*float_of_int 3.4 *)
+(*We get an error because the function should receive an integer as a parameter but we input a float. *)
+
+(*Q.4*)
+
+
+let moyenne (a:int) (b:int) : float = (float_of_int a +. float_of_int b)/. 2.0;;
+(moyenne) 0 0;;
+(* Some tests of the function:
+   moyenne 5 7 -> 6
+   moyenne (-2) 7 -> 2.5
+   moyenne (-5) 2 -> 3  
+   moyenne  0 6 -> 3
+   moyenne 0 0 -> 0 *)
+
+(*Q.5*)
+
+(*Specification int_of_float :
+  Profile = int_of_float: float -> int
+  Semantique = Takes a float and converts it to an integer.
+  Examples:
+     int_of_float 5. -> 5
+     int_of_float 0. -> 0
+     int_of_float (-6.) -> -6 *)
+int_of_float (-6.);;
 
 (* 
  EXERCICE 2.6
