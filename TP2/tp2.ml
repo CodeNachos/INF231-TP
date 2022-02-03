@@ -124,7 +124,8 @@ let moyenne (a:int) (b:int) : float = (float_of_int a +. float_of_int b)/. 2.0;;
 (* Some tests of the function:
    moyenne 5 7 -> 6
    moyenne (-2) 7 -> 2.5
-   moyenne (-5) 2 -> 3  
+   moyenne (-5) 2 -> -1.5
+   moyeenne (-7) (-6) -> -6.5
    moyenne  0 6 -> 3
    moyenne 0 0 -> 0 *)
 
