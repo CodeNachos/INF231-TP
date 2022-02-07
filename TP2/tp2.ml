@@ -44,7 +44,7 @@ monEt false true ;; (*This returns false because it checks first the left object
 
 (*Q.1*)
 3.5;; (*For '3.5', we get that the type of this value is a float*)
-3,5;; (*For '3,5', we get that the type of this value is an int*int, so a tuple essentially.*)
+3,5;; (*For '3,5', we get that the type of this value is an int*int, so a couple essentially.*)
 (4+3)/2;; (*We obtain 3 as a result, which is of type int*)
 
 (*Specification for the operator (+):
