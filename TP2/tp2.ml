@@ -152,23 +152,28 @@ int_of_float (-6.);;
 let max2 (x:int) (y:int): int =
 	(abs(x-y)+(x+y))/2
 ;;
+(* val max2 : int -> int -> int = <fun> *)
 
 let min2 (x:int) (y:int): int =
 	if max2 x y = x then y else x
 ;;
+(* val min2 : int -> int -> int = <fun> *)
 
 let max4 (a:int)(b:int) (c:int) (d:int): int =
 	max2 (max2 a b) (max2 c d)
 ;;
+(* val max4 : int -> int -> int -> int -> int = <fun> *)
 
 let min4 (a:int) (b:int) (c:int) (d:int): int =
 	min2 (min2 a b) (min2 c d)
 ;;
+(* val min4 : int -> int -> int -> int -> int = <fun> *)
 
 let moyol (a:int) (b:int) (c:int) (d:int): float =
 	let max = max4 a b c d and min = min4 a b c d in
 		float_of_int((a+b+c+d)-(max+min)) /. 2.;;
 ;;
+(* val moyol : int -> int -> int -> int -> float = <fun> *)
 
 (* Q2. *)
 
@@ -176,40 +181,67 @@ let moyol (a:int) (b:int) (c:int) (d:int): float =
 
 (* test max2 *)
 max2 0 0;;
+(* - : int = 0 *)
 max2 1 0;;
+(* - : int = 1 *)
 max2 10 5;;
+(* - : int = 10 *)
 max2 1 (-1);;
+(* - : int = 1 *)
 max2 (-1) (-2);;
+(* - : int = -1 *)
 
 (* test min2 *)
 min2 0 0;;
+(* - : int = 0 *)
 min2 1 0;;
+(* - : int = 0 *)
 min2 10 5;;
+(* - : int = 5 *)
 min2 1 (-1);;
+(* - : int = -1 *)
 min2 (-1) (-2);;
+(* - : int = -2 *)
 
 (* test min4 *)
 min4 0 0 0 0;;
+(* - : int = 0 *)
 min4 1 0 1 0;;
+(* - : int = 0 *)
 min4 1 1 0 0;;
+(* - : int = 0 *)
 min4 10 5 2 3;;
+(* - : int = 2 *)
 min4 1 (-1) 1 (-1);;
+(* - : int = -1 *)
 min4 (-1) (-2) (-3) (-2);;
+(* - : int = -3 *)
 
 (* test max5 *)
 max4 0 0 0 0;;
+(* - : int = 0 *)
 max4 1 0 1 0;;
+(* - : int = 1 *)
 max4 1 1 0 0;;
+(* - : int = 1 *)
 max4 10 5 2 3;;
+(* - : int = 10 *)
 max4 1 (-1) 1 (-1);;
+(* - : int = 1 *)
 max4 (-1) (-2) (-3) (-2);;
+(* - : int = -1 *)
 
 (* test moyol *)
 moyol 0 0 0 0;;
+(* - : float = 0. *)
 moyol 1 0 0 1;;
+(* - : float = 0.5 *)
 moyol 20 5 7 48;;
+(* - : float = 13.5 *)
 moyol (-1) 0 (-1) 0;;
+(* - : float = -0.5 *)
 moyol (-3) (-56) (-14) (-10);; 
+(* - : float = -12. *)
 
 (* 
  Q3.
