@@ -1,9 +1,11 @@
-(* -----------------------------------------------------------------------
+(* 
+-------------------------------------------------------------------------
    inf201-ABDELKADER-DOKTORCIK-MASCARENHAS-TP2.ml : cr exercices TP no2
    Youssef ABDELKADER <Youssef.Abdelkader@etu.univ-grenoble-alpes.fr>     \
    Maxcence DOKTORCIK <Maxcence.Doktorcik@etu.univ-grenoble-alpes.fr>      > Groupe Ocaml_best_camel
    Rafael MASCARENHAS Couillet <Rafael.Mascarenhas@etu.grenoble-alpes.fr> /
-   --------------------------------------------------------------------------*)
+--------------------------------------------------------------------------
+*)
 
 (*EXERCICE 2.4*)
 
