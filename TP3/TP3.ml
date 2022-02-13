@@ -1,3 +1,122 @@
+(* -----------------------------------------------------------------------
+   inf201-ABDELKADER-MASCARENHAS-DOKTORCIK-TP3.ml : cr exercices TP no3
+   Youssef ABDELKADER <Youssef.Abdelkader@etu.univ-grenoble-alpes.fr>  \ 
+   Rafael MASCARENHAS <Rafael.Mascarenhas@etu.univ-grenoble-alpes.fr>   > Groupe Ocaml_best_camel
+   Maxence DOKTORCIK <Maxence.Doktorcik@etu.grenoble-inp.fr>           / 
+   ----------------------------------------------------------------------- *)
+(*2.7: Une date est-elle correcte?*)
+(*Q.1*)
+
+(*a*)
+
+type jour = int;;
+type mois = int;;
+
+(*b*)
+
+let moi2bool (j:jour) (m:mois):bool = (m<13 && m>0) && (m=2 && j<29 && j>0);;
+(moi2bool) 29 2;;
+let moi30bool (j:jour) (m:mois):bool = (m<13 && m>0) && (m=4 || m=6 || m=9||m=11) && (j<31 && j>0);;
+(moi30bool) 31 9;;
+let moi31bool (j:jour) (m:mois):bool = (m<13 && m>0) && (m=1 || m=3 || m=5||m=7|| m=8||m=10||m=12) && (j>0 && j<32);;
+(moi31bool) 4 9;;
+(*Definition of estJourdansMoi_2*)
+
+(*Specification estJourdansMoi_2 : Checks if a date is valid for a given day and month:
+  Profile = estJourDansMoi_2: jour->moi->bool
+  Semantique = Takes a day (jour) and a month (mois) and checks whether this day is valid depending
+  on the given month. If it is, returns true, if not, returns false.
+  Example:
+          estJourDansMois_2 13 6 -> True since 13 is a valid day in the 6th month.
+          estJourDansMois_2 31 9 -> Is false since 31 is not a valid day in September.
+          estJourDansMois_2 29 2 -> Is false since we're supposing that we're not in a leap year. *)
+
+(*Realisation estJourDansMoi_2 : Computes the validity of a certain date (only concerning month and day):
+  Algorithm: Calls three different functions, that check each whether two conditions are fullfiled
+  for a certain month and day given as a parameter, if the month given does satisfy the 1st condition, checks
+  whether the day satisfies the following, for instance :
+  moi2bool j m -> Checks if m=2 and if the value of the month given is between 1 and 12 (this applies to both other functions),
+  if so, checks if the day is between 1 and 28 (we exclude leap years)
+  moi31bool j m -> checks if the month inputed has at most 31 days, if so, checks whether the day inputed is between 1 and 31.
+  moi30bool j m -> checks if the month inputed has at most 30 days, if so, checks if the 
+  day inputed is between 1 and 30. 
+  After checking all conidtions for a certain month and day given as a parameter in estJourDansMoi2
+   if one of these conditions were fullfiled (indicated by the boolean returned by one
+  of the functions) then the date is valid, even if the other functions return false. *)
+
+let estJourDansMoi_2 (j:jour) (m:mois):bool = moi2bool j m  || moi30bool j m  || moi31bool j m ;;
+(estJourDansMoi_2) 4 31;;
+
+(*c*)
+
+assert ((estJourDansMoi_2 28 2) = true);; 
+assert ((estJourDansMoi_2 30 6) = true);;
+assert ((estJourDansMoi_2 31 7) = true);;
+
+(*d*)
+
+assert ((estJourDansMoi_2 18 13) = true);; 
+assert((estJourDansMoi_2 0 4) = true);;
+
+(*For both cases, Ocaml responds with 'Exception: Assert_failure ("//toplevel//", 1, 0)',
+  which means that the values that the user gave as input do not output
+  the anticipated boolean. So the values aren't valid, for example, the value '0' for day
+  and the value '13' for month are excluded (since there is no 13th month or 0 day), so naturally
+  there won't be a day or month which verify this, thus why it can't be true and an exception is raised.*)
+
+
+(*Q.2*)
+
+(*a*)
+
+let estJourDansMoi_3 (j:jour) (m:mois):bool = match m with
+  |m when m=2 -> j<29 && j>0
+  |m when m=1 || m=3 || m=5 || m=7 || m=8 || m=10 || m=12 -> j<32 && j>0
+  |m when m=4 || m=6 || m=9 || m=11 -> j<31 && j>0
+  |_ -> failwith "Wrong month!";;
+
+(*b*)
+
+assert ((estJourDansMoi_3 28 2) = true);; 
+assert ((estJourDansMoi_3 30 6) = true);;
+assert ((estJourDansMoi_3 17 7) = true);;
+
+(*All three examples work*)
+
+assert ((estJourDansMoi_3 18 13) = true);; 
+assert((estJourDansMoi_3 0 4) = true);;
+
+(*We also get the same results (a different message is raised due to the 'failwith' command
+  but if we remove it we get the same exception error as before).*)
+
+(*Q.3*)
+
+(*a*)
+
+type mois2 = January|February|March|April|May|June|July|August|September|October|November|December;;
+
+let estJourDansMoi_4 (j:jour) (m:mois2) :bool= match m with 
+  |January -> j<32 && j>0
+  |February -> j<29 && j>0
+  |March -> j<32 && j>0
+  |April -> j< 31 && j>0
+  |May -> j>0 && j<32
+  |June -> j>0 && j<32
+  |July -> j<32 && j>0
+  |August -> j<32 && j>0
+  |September -> j<31 && j>0
+  |October -> j<32 && j>0
+  |November -> j>0 && j<31
+  |December -> j<32 && j>0;;
+(estJourDansMoi_4) 12 January;;
+
+assert ((estJourDansMoi_4 28 February) = true);; 
+assert ((estJourDansMoi_4 30 June) = true);;
+assert ((estJourDansMoi_4 17 July) = true);;
+(*The function works as expected for all tests.*)
+
+
+
 (* 
    Exercice 2.8
    Q1.
