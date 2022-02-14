@@ -139,7 +139,7 @@ assert ((estJourDansMoi_4 17 July) = true);;
 (*
 true;; false;; vrai;;             When evaluated, the expression will cause the
                                   interpreter to throw an error as 'vrai' is not 
-                                  deffined:
+                                  defined:
 Output:
 6 | true;; false;; vrai;;
                    ^^^^
@@ -159,7 +159,7 @@ Error: Syntax error
 (*
 2 < 3 ;; 2 >= 3 ;; 2 > = 3 ;; 2 <> 2 ;;   When evaluating this expression, the 
                                           interpreter will throw a syntax error
-                                          as it will consider '> =' as two 
+                                          as it will consider '>' and  '=' as two 
                                           different operators, thus evaluating
                                           '2 > (= 3)' 
 Output:                                   
@@ -170,12 +170,11 @@ Error: Syntax error
 
 (*
 2<3<4 ;; 2<3 && 3<4 ;; 2=3=true ;; 2=(3=true) ;;  When evaluated, 
-                                                  the expression will cause the
-                                                interpreter to throw an error 
-                                             as in the expression '2<3<4' after 
-                                           comparing 2 and 3 it will compare the 
-                                        result that is a boolean with 4, that is 
-                                        a int type. Similarly an error will 
+                                                  an error is occured due to   
+                                             the expression '2<3<4' , since it starts
+                                           comparing 2 and 3, and after it does so, it returns 
+                                        a boolean and compares it with 4, which is 
+                                        an int type. Similarly the same error will 
                                         occur for the expression '2=(3=true)' :
 Output:
 # 2<3<4 ;; 2<3 && 3<4 ;; 2=3=true ;; 2=(3=true) ;;
@@ -185,8 +184,8 @@ Error: This expression has type int but an expression was expected of type
 
 (*
 not (4 <= 2) ;; not 4 <= 2 ;;   When evaluating this expression, the interpreter
-                                will throw an error as in the expression ' not 
-                                4 <= 2' not expects a boolean value while the
+                                will throw an error as the expression 
+                                'not 4 <= 2' expects a boolean value while the
                                 input is 4 (an int type) because it evaluates 
                                 the expression as '(not 4) <= 2' :
 Output:                           
@@ -216,11 +215,11 @@ true || (true && false) ;;
 
 (*
   We can deduce from the first expression that the 'not' operator is prioritary 
-  over the and operator '&&' as the original expression and the second computed 
-  a 'false' output. We could also verify the priority of 'not' over other 
+  over the and operator '&&' as both the first expression and the second computed 
+  'false' as output. We could also verify the priority of 'not' over other 
   operators in the last expression of the last exercice.
   From the second expression it is possible to deduce that the expression and 
-  '&&' is prioritary over or '||' as the original expression and the last one 
+  '&&' is prioritary over or '||' as both the 1st and the last one 
   tested yielded the same results.
 *)
 
@@ -241,15 +240,15 @@ monEt (b <> 0) (a mod b = 0)
 (* essaiEt2 10 0 ;; Will raise an exception due to division by zero*)
 
 (*
- Both functions 'essaiEt1' and 'EssaiEt2' calculates a logical and  in different
- ways. While the former compares directly the outpur of two boolean comparisons,
- the later uses a intermediate function 'monEt' to compute the logical and 
+ Both functions 'essaiEt1' and 'EssaiEt2' calculates an 'and'operation in different
+ ways. While the former compares directly the output of two boolean comparisons,
+ the latter uses an intermediate function 'monEt' to compute the operation 'and' 
  between to values.
- From the test of both funtions one can deduce that the second therm of an 'and'
+ From the test of both funtions one can deduce that the second term of an 'and'
  (&&) operation is not always calculated, only when necessary. With the first 
  set of tests using 'essaiEt1' all expressions are interpreted without any 
  exception raised, meaning that the expression 'a mod b = 0' was not evalueated.
-  Whowever when using 'essaiEt2' it is needed to calculate the value of the 
+  However when using 'essaiEt2' it is needed to calculate the value of the 
   boolean expression 'a mod b = 0' because the function 'monEt' when called 
   require the output of the expression.  
 *)
@@ -265,7 +264,7 @@ monEt (b <> 0) (a mod b = 0)
                                                 declarations will raise an error
                                                 during its interpretation. The 
                                                 interpreter tries to execute the
-                                                following whith type unmatching:
+                                                following with type unmatching:
                               4,(3 /. 2),0 ;; 4,(3. /. 2),0 ;; 4,(3. /. 2.),0 ;; 
 Output:
 Error: This expression has type int but an expression was expected of type
@@ -316,7 +315,7 @@ and x3_3 : int = 10 ;;
 
     Profile     precede : int -> intervalle -> bool
     Semantics   (precede x i) if and only if x is strictly less than the 
-                integers of i
+                integers of i.
 *)
 let precede (x : int) (i :intervalle) : bool =
   let (min, _)=i in
@@ -329,8 +328,8 @@ description of the function *)
 (* Q8. *)
 
 (*
-precede 3 4 5 ;;          This call of precede raises an error as the arguments 
-                          are not defined as expected 
+precede 3 4 5 ;;          This call of 'precede' raises an error as the arguments 
+                          are not defined as expected.
 Output:
 257 | precede 3 4 5 ;;    
       ^^^^^^^
@@ -351,8 +350,8 @@ precede 3 (4,5) ;;
 (* Output: - : bool = true *)
 
 
-(* Definition des fonctions 'dans'  and 'suit' 
-   (en utilisant aussi le type intervalle) *)
+(* Definition of the fonctions 'dans'  and 'suit' 
+   (while using the type 'intervalle') *)
 
 (* SPECIFICATION 
 
@@ -446,13 +445,13 @@ let coteAcote (i1 : intervalle) (i2 : intervalle) : bool =
 
 (* SPECIFICATION 
    Profile      intervalle -> intervalle -> bool
-   Semantics    chevauche(i1, i2) is true if and only if i1 and i2 doesnt have 
+   Semantics    chevauche(i1, i2) is true if and only if i1 and i2 do not have 
                 common borders, one is not included in the other, but their 
                 intersection is not empty
 *)
 let chevauche (i1 : intervalle) (i2 : intervalle) : bool =
   let (min1, max1)=i1 and (min2, max2)=i2 in
-    (* verifies that theres no common border *)
+    (* verifies that there is no common border *)
     ((min1 <> min2) && (min1 <> max2) && (max1 <> min2) && (max1 <> max2)) 
     && (* verifies that the intersection is not empty *)
     (((min1 < max2) && (max1 > max2)) || ((max1 > min2) && (min1 < min2)))
