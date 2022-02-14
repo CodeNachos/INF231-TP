@@ -55,8 +55,15 @@ assert ((estJourDansMoi_2 31 7) = true);;
 
 (*d*)
 
+(* 
 assert ((estJourDansMoi_2 18 13) = true);; 
+Output:
+Exception: Assert_failure ("tp3.ml", 58, 0).
+
 assert((estJourDansMoi_2 0 4) = true);;
+Output:
+Exception: Assert_failure ("tp3.ml", 59, 0).
+*)
 
 (*For both cases, Ocaml responds with 'Exception: Assert_failure ("//toplevel//", 1, 0)',
   which means that the values that the user gave as input do not output
@@ -83,8 +90,15 @@ assert ((estJourDansMoi_3 17 7) = true);;
 
 (*All three examples work*)
 
+(*
 assert ((estJourDansMoi_3 18 13) = true);; 
+Output:
+Exception: Failure "Wrong month!".
+
 assert((estJourDansMoi_3 0 4) = true);;
+Output:
+Exception: Failure "Wrong month!".
+*)
 
 (*We also get the same results (a different message is raised due to the 'failwith' command
   but if we remove it we get the same exception error as before).*)
