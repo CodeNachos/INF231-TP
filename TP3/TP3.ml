@@ -215,10 +215,10 @@ true || (true && false) ;;
 
 (*
   We can deduce from the first expression that the 'not' operator is prioritary 
-  over the and operator '&&' as both the first expression and the second computed 
+  over the and operator '&&' as both the first and second expressions computed 
   'false' as output. We could also verify the priority of 'not' over other 
   operators in the last expression of the last exercice.
-  From the second expression it is possible to deduce that the expression and 
+  For the second expression it is possible to deduce that the expression and 
   '&&' is prioritary over or '||' as both the 1st and the last one 
   tested yielded the same results.
 *)
@@ -245,12 +245,12 @@ monEt (b <> 0) (a mod b = 0)
  the latter uses an intermediate function 'monEt' to compute the operation 'and' 
  between to values.
  From the test of both funtions one can deduce that the second term of an 'and'
- (&&) operation is not always calculated, only when necessary. With the first 
+ operation (&&) is not always calculated, only when necessary. With the first 
  set of tests using 'essaiEt1' all expressions are interpreted without any 
  exception raised, meaning that the expression 'a mod b = 0' was not evalueated.
-  However when using 'essaiEt2' it is needed to calculate the value of the 
-  boolean expression 'a mod b = 0' because the function 'monEt' when called 
-  require the output of the expression.  
+ However when using 'essaiEt2' it is needed to calculate the value of the 
+ boolean expression 'a mod b = 0' because the function 'monEt' when called 
+ require the output of the expression.  
 *)
 
 (*
@@ -431,7 +431,7 @@ and cst_I5 : intervalle = (5, 10)
 and cst_I6 : intervalle = (4, 7)
 and cst_I7 : intervalle = (1, 2) ;;
 
-(* Declaration of functions 'coteAcote' and 'chebauche' *)
+(* Declaration of functions 'coteAcote' and 'chevauche' *)
 
 (* SPECIFICATION
    Profile      coteAcote : itervalle -> intervalle -> bool
