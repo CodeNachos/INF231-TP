@@ -2,7 +2,7 @@
    inf201-ABDELKADER-MASCARENHAS-DOKTORCIK-TP3.ml : cr exercices TP no3
    Youssef ABDELKADER <Youssef.Abdelkader@etu.univ-grenoble-alpes.fr>  \ 
    Rafael MASCARENHAS <Rafael.Mascarenhas@etu.univ-grenoble-alpes.fr>   > Groupe Ocaml_best_camel
-   Maxence DOKTORCIK <Maxence.Doktorcik@etu.univ-grenoble-alpes.fr>           / 
+   Maxence DOKTORCIK <Maxence.Doktorcik@etu.univ-grenoble-alpes.fr>     / 
    ----------------------------------------------------------------------- *)
 (*2.7: Une date est-elle correcte?*)
 (*Q.1*)
