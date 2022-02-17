@@ -202,7 +202,7 @@ poCouple ('d', '#') ;;
 (*int_of_char(8);;*) (*This doesn't work because an expression of type char was expected but we gave an int and the literal name is an int out of a char so we needed a character*)
 int_of_char(’8’);; (*This time 8 is a character because we putted the '' which defines a character and it then gives us 56 which is the ASCII code of 8*)
 int_of_char(’a’);; (*a is a character and it's value in ASCII is 97*)
-int_of_char(’A’);; (*A is here also a character but this time it's value is 65 so we can see that there us==*)
+int_of_char(’A’);; (*A is here also a character but this time it's value is 65 so we can see that there is a difference in terms of value for upper case and lower case letters in ASCII*)
 
 (*Q2/*)
 char_of_int(-5);; (*This returns an error simply because all ASCII codes are between 0 and 255 (for the extend one otherwise it's between 0 and 127) and we gave -5 which is not in the range so we have an "invalid argument" error*)
@@ -275,5 +275,5 @@ type base16 = int (*Since a number in base16 is an integer then we say that the 
 let carhexVbase16(a:carhex):base16=
   if int_of_char('A')<=int_of_char(a) && int_of_char(a)<=int_of_char('F') then (int_of_char(a)-int_of_char('A')+1)+9 else base10Vchiffre(a);;
 carhexVbase16 ('0');;
-
+(*Do asserts*)
 (*Q4/*)
