@@ -209,7 +209,7 @@ char_of_int(-5);; (*This returns an error simply because all ASCII codes are bet
 char_of_int(33);; (*This time it works because we are in the range said above and it gives us the character '!'*)
 char_of_int(255);; (*It gives us '\255' in OCaml but it is actually ÿ in ASCII it's just that apparently OCaml doesn't know how to write ÿ and when we try int_of_char('ÿ') it doesn't work even though it should be defined*)
 char_of_int(256);; (*As expected, this gives an error of type "invalid argument" because it is not in the range of the ASCII codes*)
-(*Since we know that the maximum is 255 then k is 128 in 2k-1 because it gives 255*)
+(*Since we know that the maximum is 255 then k is 8 in 2^(k)-1 because it gives 255*)
 
 (*2.12.2/*)
 (*Q3/*)
