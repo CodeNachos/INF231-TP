@@ -192,7 +192,180 @@ poCouple ('d', '#') ;;
 
 (* Indeed the order follows the one of the characters code *)
 
+(*Exercice 2.11 *)
 
+(*2.11 Type Durée et opérations associées*)
+
+(*2.11.1 Définition du type duree et des operations associées*)
+
+(*Q.1*)
+
+type jour = int (* {0,...,31} *);;
+type heure = int (* {0,...,23} *);;
+type de0a59 = int (* {0,...,59} *);;
+type minute = int (* {0,...,59} *);;
+type seconde = int (* {0,...,59} *);;
+type duree = jour * heure * minute * seconde;;
+
+(*Q.1 bis*)
+
+let div (n:int) (m:int) :int*int = (n/m, n mod m);; 
+(div) 5 2;;
+
+let sec_en_duree (s:seconde):duree = let (q,r) = div s 60 in match (q,r) with
+  |(q,r) when q<60 -> (0,0,q,r)
+  |(q,r) when q<1440  -> let (q1,r1) = div q 60 in (0,q1,r1,r)
+  |_ -> let (q1,r1) = div q 60 in let (q2,r2) = div q1 24 in (q2,r2,r1,r);;
+
+(sec_en_duree) 86401;;
+
+(*Q.2*)
+
+(*Specification nb_total_sec : Takes a duree and computes its number of seconds:
+  Profil= nb_total_sec : int*int*int*int-> seconde
+  Semantique= nb_total_sec(j, h, m, s) is the total number of seconds calculated with the equation 
+  j jours + h heures + m minutes + s secondes
+  Ex et Prop:
+                 (i) nb_total_sec(1, 0, 0, 0) = 86400
+                (ii) nb_total_sec(0, 1, 0, 0) = 3600
+                (iii) nb_total_sec( 0,0 , 1, 30 ) = 90
+                (iv) nb_total_sec( 0 , 0, 2, 0 ) = 120 *)
+
+
+
+let nb_total_sec (d:int*int*int*int):seconde = let (j,h,m,s) = d in j * 24*3600 + h*3600+ m*60 + s;;
+(nb_total_sec) (0,1,2,0);;
+(*Q.3*)
+
+(*Realisation vec_en_duree:
+  Algorithm : Calculates the number of seconds represented by the vector, then converts it into
+  a duree thanks to the function sec_en_duree.
+  Implementation:*)
+let vec_en_duree (vect:int*int*int*int):duree = let (j,h,m,s) = vect in 
+  let sec = j * 24 * 3600 + h*3600 + m*60 + s in sec_en_duree sec;;
+
+(vec_en_duree) (0,0,1160,34);;
+
+(*Q.4*)
+
+let select_j (d:duree):jour = let (j,_,_,_) = d in j;;
+(select_j) (5,4,6,4);;
+let select_h (d:duree):heure = let (_,h,_,_) = d in h;;
+(select_h) (4,7,4,8);;
+let select_m (d:duree):minute = let (_,_,m,_) = d in m;;
+(select_m) (0,7,4,8);;
+let select_s (d:duree):seconde = let (_,_,_,s) = d in s;;
+(select_s) (4,7,4,8);;
+
+(*Q.5*)
+
+(*Realisation duree_en_sec:
+  Algorithm = Usage of selectors and nb_total_sec
+  Implementation:*)
+
+let duree_en_sec (d:duree):seconde = nb_total_sec(select_j d , select_h d, select_m d, select_s d);;
+(duree_en_sec) (0,0,2,1);;
+
+(*Q.6*)
+
+(*Realisation of som_duree1:
+  Algorithm :We use duree_en_sec and sec_en_duree.
+  Implementation :*)
+let som_duree1 (d1:duree)(d2:duree) = sec_en_duree (duree_en_sec d1 + duree_en_sec d2);;
+(som_duree1) (0,0,2,0) (0,1,1,0);;
+
+(*Realisation of sum_duree2:
+  Algorithm : We add the coordinates of both vectors respectively while taking into account
+  the excess (if there is) left by the addition.
+  Implementation :*)
+
+
+let sum_secondes (s1:seconde) (s2:seconde) : seconde = s1+s2;;
+let sec_bool (s1:seconde) (s2:seconde) : bool = s1+s2<60;;
+let sum_minute (s1:seconde)(s2:seconde) (m1:minute) (m2:minute):minute = 
+  if sec_bool s1 s2 then m1 + m2
+  else m1+m2+1;;
+let minute_bool (m1:minute) (m2:minute) : bool =  m1+m2<60;;
+let sum_heures (s1:seconde) (s2:seconde) (m1:minute) (m2:minute) (h1:heure) (h2:heure):heure = 
+  if sec_bool s1 s2 then if minute_bool m1 m2 
+    then h1 + h2 else h1+h2+1 else if minute_bool (m1+1) (m2) then h1+h2 else h1+h2+1;;
+let heure_bool (h1:heure) (h2:heure):bool = h1+h2<24;;
+let sum_jours (s1:seconde) (s2:seconde) (m1:minute) (m2:minute) (h1:heure) (h2:heure) (j1:jour) (j2:jour) = 
+  if sec_bool s1 s2 then if minute_bool m1 m2 then if heure_bool h1 h2 then j1+j2 else 
+        j1+j2+1 else if heure_bool (h1+1) h2 then j1+j2 else j1+j2+1 else 
+  if minute_bool (m1+1) (m2) then if heure_bool h1 h2 then j1+j2 else j1+j2+1 else 
+  if heure_bool (h1+1) (h2) then j1+j2 else j1+j2+1  ;;
+let bool_jour (j1:jour) (j2:jour):bool = j1+j2<31;; 
+
+let sum_min_bigger (s1:seconde) (s2:seconde) (m1:minute) (m2:minute) = if sec_bool s1 s2 then m1 + m2 -60 else m1 + m2 -59;;
+
+let sum_hour_bigger (s1:seconde) (s2:seconde) (m1:minute) (m2:minute) (h1:heure) (h2:heure) = 
+  if sec_bool s1 s2 then if minute_bool m1 m2 then h1 + h2 -24 else h1 + h2 -23 else
+  if minute_bool (m1+1) m2 then h1 + h2 -24 else h1 + h2 -23;;
+
+let sum_day_bigger (s1:seconde) (s2:seconde) (m1:minute) (m2:minute) (h1:heure) (h2:heure) (j1:jour) (j2:jour) = 
+  if sec_bool s1 s2 then if minute_bool m1 m2 then 
+      if heure_bool h1 h2 then j1 + j2 -31 else j1 + j2 -30 else 
+    if heure_bool (h1+1) (h2) then j1+j2 -31 else j1 + j2 -30 else 
+  if minute_bool (m1+1) m2 then j1 + j2 -31 else if heure_bool (h1+1) h2 then j1+j2-31 else j1+j2-30;;
+
+let sum_duree2 (d1:duree) (d2:duree) :duree= let (j1,h1,m1,s1) = d1 and (j2,h2,m2,s2) = d2 in 
+let sum_sec = (if sec_bool s1 s2 then sum_secondes s1 s2 else (s1+s2) - 60) and 
+sum_min = (if minute_bool m1 m2 then if 60 = sum_minute s1 s2 m1 m2 then 0 else sum_minute s1 s2 m1 m2  else sum_min_bigger s1 s2 m1 m2) and 
+sum_h = (if heure_bool h1 h2 then if 24 = sum_heures s1 s2 m1 m2 h1 h2 then 0 else sum_heures s1 s2 m1 m2 h1 h2  else 
+    sum_hour_bigger s1 s2 m1 m2 h1 h2) and 
+sum_j = (if bool_jour j1 j2 then if 31 = sum_jours s1 s2 m1 m2 h1 h2 j1 j2 then 0 else sum_jours s1 s2 m1 m2 h1 h2 j1 j2  else 
+    sum_day_bigger s1 s2 m1 m2 h1 h2 j1 j2 ) in 
+  (sum_j,sum_h,sum_min,sum_sec);;
+
+(sum_duree2) (23,23,59,56) (2,3,6,7);;
+
+(*Q.7*)
+
+(*Realisation eg_duree1:
+  Algorithm: Using the function duree_en_sec.
+  Implementation:*)
+
+let eg_duree1 (d1:duree) (d2:duree):bool = duree_en_sec (d1) = (duree_en_sec(d2));;
+(eg_duree1) (5,4,3,5) (5,4,3,6);;
+
+(*Realisation eg_duree2:
+  Algorithm: Decomposing duree into vectors and comparing them.
+  Implementation: *)
+let eg_duree2 (d1:duree) (d2:duree) :bool= let (j1,h1,m1,s1) = d1 and (j2,h2,m2,s2) = d2 in 
+  (j1,h1,m1,s1) = (j2,h2,m2,s2);;
+(eg_duree2) (5,4,3,5) (5,4,3,7);;
+
+(*Realisation eg_duree3:
+  Algorithm: Decomposing the vectors using Let.
+  Implementation: *)
+let eg_duree3 (d1:duree) (d2:duree) :bool= let (j1,h1,m1,s1) = d1 and (j2,h2,m2,s2) = d2 in
+  (j1=j2) && (h1=h2) && (m1=m2) && (s1=s2);;
+(eg_duree3) (5,4,3,9) (5,4,3,5);;
+
+(*Realisation eg_duree4:
+  Algorithm: Using selects functions.
+  Implementation: *)
+let eg_duree4 (d1:duree) (d2:duree):bool = (select_j d1 = select_j d2) && (select_h d1 = select_h d2) && 
+                                           (select_m d1 = select_m d2) && (select_s d1 = select_s d2);;
+(eg_duree4) (4,2,7,43) (4,2,4,43);;
+
+(*Q.8*)
+(*Realisation inf_duree1
+  Algorithm : Using the function duree_en_sec
+  Implementation: *)
+let inf_duree1 (d1:duree) (d2:duree):bool = (duree_en_sec d1) < (duree_en_sec d2);;
+(inf_duree1) (5,4,3,9) (5,4,3,5);;
+
+(*Realisation inf_duree2
+  Algorithm : Using nested conditional "if"s.
+  Implementation: *)
+let inf_duree2 (d1:duree) (d2:duree) :bool = let (j1,h1,m1,s1) = d1 and (j2,h2,m2,s2) = d2 in
+  if j1>j2 then true else if j1<j2 then false else 
+  if h1 > h2 then true else if h1 < h2 then false else
+  if m1 > m2 then true else if m1 < m2 then false else
+  if s1>s2 then true else false;;
+(inf_duree2) (5,4,7,9) (5,4,3,5);;
 
 
 (*Exercice 2.12*)
