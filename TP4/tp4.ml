@@ -450,3 +450,344 @@ let carhexVbase16(a:carhex):base16=
 carhexVbase16 ('0');;
 (*Do asserts*)
 (*Q4/*)
+
+(* ALL RAFAEL WORK HERE NOT NECESSARY TO KEEP IT LIKE THAT SPECIALLY FOR 1.13 *)
+(*
+  Exercice 2.10.
+  2.10.1
+  Q1.
+*)
+
+(* SPECIFICATION
+
+   Profile        poCoupleE: int * int -> int*int
+   Semantics      let (xp, yp) = poCoupleE(x, y) is the ordered permutation of 
+                  (x, y), defined as follows :
+
+                  (xp, yp) = {(x, y) if x <= y,
+                              (y, x) else}
+
+    Ex and Prop.  (i)  poCoupleE(3,4) = (3,4)
+                  (ii) poCoupleE(4,3) = (3,4)
+*)
+let poCoupleE (a,b:int*int) : (int*int)=
+  if a > b then (b,a)
+  else (a,b)
+;; 
+
+(* function test *)
+assert((poCoupleE (3,4)) = (3,4));;
+assert((poCoupleE (4,3)) = (3,4));;
+
+(* Q2. *)
+(*
+poCoupleE (33.3, 14.5);;
+
+Output:
+28 | poCoupleE (33.3, 14.5);;
+                ^^^^
+Error: This expression has type float but an expression was expected of type
+         int
+*)
+
+(* The function expected a cuple of two integers but a product of two float 
+was given producing an error *)
+
+(*
+   2.10.2
+   Q3.
+*)
+
+2 < 3 ;;
+(* Output: - : bool = true *)
+2.0 < 3.0 ;;
+(* Output: - : bool = true *)
+
+(* Both expressions are of boolena type *)
+
+(* Q4 *)
+
+(* OPERATORS OVERLOADING TEST
+    
+  Structural equality test '=' *)
+2 = 3 ;;
+(* Output: - : bool = false *)
+2.0 = 3.0 ;;
+(* Output: - : bool = false *)
+
+(* Structural inequality test '<>'*)
+2 <> 3 ;;
+(* Output: - : bool = true *)
+2.0 <> 3.0 ;;
+(* Output: - : bool = true *)
+
+(* Physical equality test '==' *)
+2 == 3 ;;
+(* Output: - : bool = false *)
+2.0 == 3.0 ;;
+(* Output: - : bool = false *)
+
+(* Physical inequality test '!=' *)
+2 != 3 ;;
+(* Output: - : bool = true *)
+2.0 != 3.0 ;;
+(* Output: - : bool = true *)
+
+(* Less than equal test '<=' *)
+2 <= 3 ;;
+(* Output: - : bool = true *)
+2.0 <= 3.0 ;;
+(* Output: - : bool = true *)
+
+(* Greather than test '>' *)
+2 > 3 ;;
+(* Output: - : bool = false *)
+2.0 > 3.0 ;;
+(* Output: - : bool = false *)
+
+(* Greater equal than test '>=' *)
+2 >= 3 ;;
+(* Output: - : bool = false *)
+2.0 >= 3.0 ;;
+(* Output: - : bool = false *)
+
+(* One can deduce from those tests that all comparison operators are overloaded *)
+
+(* Q5 *)
+
+(* SPECIFICATION
+
+   Profile        poCoupleR: float*float -> float*float
+   Semantics      let (xp, yp) = poCoupleE(x, y) is the ordered permutation of 
+                  (x, y), defined as follows :
+
+                  (xp, yp) = {(x, y) if x <= y,
+                              (y, x) else}
+    
+    Ex and Prop.  (i)  poCoupleE(3.0,4.0) = (3.0,4.0)
+                  (ii) poCoupleE(4.0,3.0) = (3.0,4.0)
+*)
+let poCoupleR (a,b :float*float) : (float*float)=
+  if a > b then (b,a)
+  else (a,b)
+;;
+
+(* function test *)
+assert((poCoupleR (3.0,4.0)) = (3.0,4.0));;
+assert((poCoupleR (4.0,3.0)) = (3.0,4.0));;
+
+(*
+   2.10.3
+   Q6.
+*)
+
+let poCouple (x,y: 'un_type*'un_type) : 'un_type*'un_type =
+  if x <= y then x,y else y,x
+;;
+(* Output: 
+val poCouple : 'un_type * 'un_type -> 'un_type * 'un_type = <fun> *)
+
+(* Q7. *)
+
+poCouple (3, 2) ;; poCouple (33.3, 14.5) ;;
+(* Output:
+- : int * int = (2, 3)
+- : float * float = (14.5, 33.3) *)
+
+(*poCouple (3, 14.5) ;; 
+Output: 
+145 | poCouple (3, 14.5) ;;
+                   ^^^^
+Error: This expression has type float but an expression was expected of type
+         int
+
+This expression throw an error. Even if the types are not specified the cuple
+must be composed of two elements of the same type
+*)
+
+(* Q8. *)
+
+(*
+  From the previous questions one can infer that the operators <, <=, >, >= are
+  polymorphs
+
+  Profile < 'a -> 'a -> bool
+  Profile <= 'a -> 'a -> bool
+  Profile > 'a -> 'a -> bool
+  Profile >= 'a -> 'a -> bool
+*)
+
+(<) ;;
+(* Output: - : 'a -> 'a -> bool = <fun> *)
+(<=) ;;
+(* Output: - : 'a -> 'a -> bool = <fun> *)
+(>) ;;
+(* Output: - : 'a -> 'a -> bool = <fun> *)
+(>=) ;;
+(* Output: - : 'a -> 'a -> bool = <fun> *)
+
+(* Q9. *)
+
+poCouple ('a', 'b') ;;
+(* Output: - : char * char = ('a', 'b') *)
+poCouple ('b', 'a') ;;
+(* Output: - : char * char = ('a', 'b') *)
+poCouple ('d', '#') ;;
+(* Output: - : char * char = ('#', 'd') *)
+
+(* Indeed the order follows the one of the characters code *)
+
+
+
+
+
+(* Exerco\ice 2.12.2 *)
+
+type base10 = int;; (*Since the numbers in the base are character then we say that the type base10 is the same type of character*)
+type chiffre = char;; (*Since a number is an integer then we say that the type number is the same as int*)
+  
+(*Creating the function as we said in question 5*)
+let chiffreVbase10 (a:chiffre):base10= (*/!\ a as to be between '0' and '9'*)
+  int_of_char(a) - int_of_char('0') ;;
+  
+let base10Vchiffre (b:base10):chiffre= (*/!\ b as to be between 0 and 9*)
+  char_of_int(b + int_of_char('0')) ;;
+
+(*
+   Exercice 2.13
+   Q1.
+*)
+
+(* SPECIFICATION
+   
+   Profile      carhexVbase16: carhex -> base16
+   Semantics    carhexVbase16(c) is the positional value of the hexademcimal 
+                elementar character c such that c is an element of the set union
+                {'0', ... , '9'} U {'A', ... , 'F'}
+*)
+
+(* Q2. *)
+
+(* Definition of hexadecimal characters as char.
+   /!\ Note that hexadecimal characters are included on the following set :
+   /!\ carhex = {char | char ⊂ {'0', ... , '9'} U {'A', ... , 'F'}} *)
+type carhex = char ;;
+
+(* Definition of hexacimal elemental characters positional values
+   /!\ Note that the positional values are comprised in the interval :
+   /!\ base16 = {int ⊂ ℤ | int ⊂ [0;15]} *)
+type base16 = int ;;
+
+(* Q3. *)
+
+(* Implementation of carhexVbase16, described in Q1. *)
+
+let carhexVbase16 (chex: carhex) : base16 =
+  if (chex >= '0' && chex <= '9') then
+    chiffreVbase10(chex)
+  else if (chex >= 'A' && chex <= 'F') then
+    int_of_char(chex) - 55
+  else
+    failwith "Invalid carhex value"
+;;
+
+(* Q4. *)
+
+(* Definition of hexadecimal characters as char as a sum type. Constructor
+   names mimic the pronunciation of each elemental character.
+   /!\ Note that hexadecimal characters are included on the following set :
+   /!\ carhex = {char | char ⊂ {'0', ... , '9'} U {'A', ... , 'F'}} *)
+type carhex = Zero
+              | One   | Two   | Three
+              | Four  | Five  | Six
+              | Seven | Eight | Nine
+              | Car_A | Car_B | Car_C
+              | Car_D | Car_E | Car_F 
+;;
+
+(* The type base16 does not change as its a representation of integer numbers
+   /!\ Note that the positional values are comprised in the interval :
+   /!\ base16 = {int ⊂ ℤ | int ⊂ [0;15]} 
+type base16 = int ;;   
+*)
+
+
+let carhexVbase16_v2 (chex: carhex) : base16 =
+  match chex with
+  | Zero  -> 0   
+  | One   -> 1  | Two   -> 2  | Three -> 3  
+  | Four  -> 4  | Five  -> 5  | Six   -> 6
+  | Seven -> 7  | Eight -> 8  | Nine  -> 9
+  | Car_A -> 10 | Car_B -> 11 | Car_C -> 12
+  | Car_D -> 13 | Car_E -> 14 | Car_F -> 15
+;;
+
+
+
+
+
+(*
+   Exercice 2.14
+   Q1.
+*)
+
+(* Defining the type hexa4 of int type
+   /!\ Note that values of hexa4 must be included in the set:
+   /!\ hexa4 = {int ⊂ ℤ | int ⊂ [0; 16^(4)-1]} *)
+type hexa4 = int ;;
+
+(* Q2. *)
+
+(* Defining the product type rep_hexa4 of carhex. This type represents a 4 
+characters hexademximal number.
+   /!\ All elements of this product type must be of type carhex, see carhex type
+   for its definition *)
+type rep_hexa4 = carhex * carhex * carhex * carhex ;;
+
+(* Q3. *)
+
+(* SPECIFICATION
+
+   Profile      ecriture_hex: hexa4 -> rep_hexa4
+   Semantics    ecriture_hex(n) is the representation of the integer value n as 
+                four hexadecimal elements writing. Note that n must be included 
+                in the interval [0; 16^(4)-1]
+*)
+
+(* Q4. *)
+
+(* SPPECIFICATION
+  
+   Profile       base16Vcarhex: base16 -> carhex
+   Semantics     base16Vcarhex(b16) is the elemental hexadecimal character 
+                 represented by the positional value b16, such that b16 is an
+                 integer comprised in the interval [0; 15]
+*)
+let base16Vcarhex (b16: base16) : carhex =
+   match b16 with
+   | 0  -> Zero
+   | 1  -> One   | 2  -> Two   | 3  -> Three
+   | 4  -> Four  | 5  -> Five  | 6  -> Six
+   | 7  -> Seven | 8  -> Eight | 9  -> Nine
+   | 10 -> Car_A | 11 -> Car_B | 12 -> Car_C
+   | 13 -> Car_D | 14 -> Car_E | 15 -> Car_F
+   | _  -> failwith "invalid base16 value"
+;;
+
+(* Q5. *)
+
+let ecriture_hex (hx4: hexa4) : rep_hexa4 =
+   let ten=hx4/16 and u=hx4 mod 16 in
+      let hndd=ten/16 and d=ten mod 16 in
+         let thsnd=hndd/16 and c=hndd mod 16 in 
+            let m=thsnd mod 16 in
+   (base16Vcarhex(m), base16Vcarhex(c), base16Vcarhex(d), base16Vcarhex(u))
+;;
+
+(* Q6. *)
+
+assert((ecriture_hex(0)) = (Zero, Zero, Zero, Zero)) ;;
+assert((ecriture_hex(16*16*16*16 - 1)) = (Car_F, Car_F, Car_F, Car_F)) ;;
+assert((ecriture_hex(12345)) = (Three, Zero, Three, Nine)) ;;
+
+
