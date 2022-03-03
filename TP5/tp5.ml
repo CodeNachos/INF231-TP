@@ -127,7 +127,55 @@ let rec fact3 (p:int):int = if p = 0 then 1 else p * fact3 (p-1);;
 
 
 
------
+(*Exercise 3.2*)
+
+type baton = string;; (* dont les caractères sont uniquement des | *)
+
+(*Question 1*)
+
+let sum (b1:baton)(b2:baton):baton=b1^b2;;
+sum ("|||")("|||");;
+
+(*Question 2*)
+
+type nat=int;; (*Positive integers only*)
+
+(*Question 3*)
+
+let natVbaton (n:nat):baton=
+  String.make n '|';; (*Uses the fonction String.make already implemented in OCaml to creat a string containing the number of baton*)
+
+assert ((natVbaton 5)="|||||");;
+
+(*Question 4*)
+
+let rec natVbaton2 (n:nat):baton=if n=0 then "" else "|"^natVbaton2 (n-1);; (*We will concatenate "|" as long as the number is*)
+
+assert ((natVbaton2 5)="|||||");;
+
+(*Question 5*)
+
+let rec batonVnat (b:baton):nat=if b="" then 0 else 1+batonVnat (String.sub b 0 (String.length(b)-1));; (*We will add 1 as long as the length of the string b by cutting each one until we have none*)
+
+assert ((batonVnat ("||||||||"))=8);;
+
+(*Question 6*)
+
+let rec mult (b1:baton) (b2:baton):baton=if b2="|" then b1 else if b2="" then "" else b1^(mult b1 ((String.sub b2 0 ((String.length(b2))-1))));;
+(*Cheks if either one of them is "" or "|" to match particular cases and then concatenate b1 with as much as b1 as necessary given by the number in b2 (so it's length)*)
+
+let mult_nat (n1:nat) (n2:nat) : nat = batonVnat(mult (natVbaton n1) (natVbaton n2));;(*This function is the one from the poly*)
+
+assert ((mult_nat 4 3)=12);;
+
+(*Question 7*)
+
+let mult2 (b1:baton) (b2:baton):baton=String.make (String.length(b1)*String.length(b2)) '|';;(*Simply multiplies the length of b1 and b2 and makes it as a baton*)
+
+assert((mult2 ("|||") ("|||||"))="|||||||||||||||");;
+
+
+
 (*
    Exercice 3.3.1
    Q1.
