@@ -1,4 +1,14 @@
-(* Q1. *)
+(* -----------------------------------------------------------------------
+   inf201-ABDELKADER-MASCARENHAS-DOKTORCIK-TP3.ml : cr exercices TP no5
+   Youssef ABDELKADER <Youssef.Abdelkader@etu.univ-grenoble-alpes.fr>  \ 
+   Rafael MASCARENHAS <Rafael.Mascarenhas@etu.univ-grenoble-alpes.fr>   > Groupe Ocaml_best_camel
+   Maxence DOKTORCIK <Maxence.Doktorcik@etu.univ-grenoble-alpes.fr>    / 
+----------------------------------------------------------------------- *)
+
+(* 
+   Exercice 4.1
+   Q1. 
+*)
 
 (* Le type flux represente le nombre de vehicules qui sont passes pendant la
    periode d'un jour. C'est donc le flux journalier
