@@ -40,6 +40,10 @@ let rec nbj_sans (l:releve):int = match l with
   Profile= nbj_avec: releve -> int -> int
   Semantique = (nbj_avec r x ) Takes in a list r and a number x and computes the amount of times
   the element x is in the list r.
+  Exampples:
+      nbj_sans(C(4,C(0,C(1,C(0,V)))) , 4)  = 1
+      nbj_sans(C(3,C(-1,C(3,C(3,C(-1,V))))) , 3) = 3
+      nbj_sans(C(4,C(0,C(-1,C(5,V)))), 2) = 0
 *)
 
 (*Q.6*)
