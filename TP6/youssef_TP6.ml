@@ -101,6 +101,11 @@ assert(nbj_panne r3 = 0);;
   Profile = flux_app: releve -> flux -> bool
 
   Semantique = (flux_app x r) is true if and only if x is in the list r.
+    Examples:
+  nbj_sans(C(4,C(0,C(1,C(0,V)))) , 4)  = true
+  nbj_sans(C(3,C(-1,C(3,C(3,C(-1,V))))) , 3) = true
+  nbj_sans(C(3,C(-1,C(3,C(3,C(-1,V))))) , 2) = false
+  *)
 *)
 
 (*Q.12*)
