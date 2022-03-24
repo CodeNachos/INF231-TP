@@ -35,6 +35,7 @@ let p3 :polynome = [constM3; constM2] ;;               (* p3= -3x^2 + 7x      *)
 let p4 :polynome = [constM4; constM3; constM2];;       (* p4=  x^4 -3x^2 + 7x *)
 let p5 :polynome = [constM5] ;;                        (* p5= -x^4            *)
 
+
 (* Q3 *)
 
 (* Implementation derivMono
@@ -47,6 +48,7 @@ let p5 :polynome = [constM5] ;;                        (* p5= -x^4            *)
 *)
 let derivMono ((c, p):monome) : monome =
   if (c = 0 || p = 0) then (0, 0) else (c*p, p-1) ;;
+
 
 (* Q4. *)
 
