@@ -3,7 +3,7 @@
    Q1. 
 *)
 
-type 'a abin = Empty | Node of 'a*'a abin*'a abin ;;
+type 'a abin = Av | Ab of 'a abin*'a*'a abin ;;
 
 (* 
    Exercice 6.1.1
@@ -11,15 +11,15 @@ type 'a abin = Empty | Node of 'a*'a abin*'a abin ;;
 *)
 
 (* Defining sub-trees *)
-let leaf13 = Node(13, Empty, Empty) ;;
-let leaf33 = Node(33, Empty, Empty) ;;
-let node7l = Node(7, Empty, leaf13) ;;
-let node7r = Node(7, leaf13, Empty) ;;
+let leaf13 = Ab(Av, 13, Av) ;;
+let leaf33 = Ab(Av, 33, Av) ;;
+let abin7l = Ab(Av, 7, leaf13) ;;
+let abin7r = Ab(leaf13, 7, Av) ;;
 (* Defining trees *)
 let ex1: int abin = 
-  Node(15, node7r, leaf33) ;;
+  Ab(abin7r, 15, leaf33) ;;
 let ex2: int abin =
-  Node(15, node7l, leaf33) ;;
+  Ab(abin7l, 15, leaf33) ;;
 
 (* 
    Exercice 6.1.2
@@ -28,54 +28,58 @@ let ex2: int abin =
 
 (* Defining building functions *)
 let abS (n: int) : int abin =
-  Node(n, Empty, Empty) ;;
+  Ab(Av, n, Av) ;;
 
 let abUNd ((n: int),(a: int abin)) : int abin = 
-  Node(n, Empty, a) ;;
+  Ab(Av, n, a) ;;
 
 let abUNg ((a: int abin),(n: int)) : int abin =
-  Node(n, a, Empty) ;;
+  Ab(a, n, Av) ;;
 
 (*  Q4. *)
 
 (* Redefining trees *)
-let ex1 = Node(15, 
+let ex1 = Ab( 
   (abUNd 
     (
       7, 
       (abS 13)
     )
-  ), (abS 33)
+  ),
+    15,
+  (abS 33)
 ) ;;
 
-let ex2 = Node(15,
+let ex2 = Ab(
   (abUNg
     (
       (abS 13),
       7
     )
-  ), (abS 33)
+  ),
+    15,
+  (abS 33)
 ) ;;
 
 (*
    Exercice 6.1.3
    Q5.
 *)
-let (!) (x:'a) : 'a abin = Node(x, Empty, Empty)  ;;
+let (!) (x:'a) : 'a abin = Ab(Av, x, Av) ;;
 
 (* Q6. *)
-let (->>) (r:'a) (d:'a abin) : 'a abin = Node(r, Empty, d) ;;
+let (->>) (r:'a) (d:'a abin) : 'a abin = Ab(Av, r, d) ;;
 
-let (<<-) (g:'a abin) (r:'a) : 'a abin = Node(r, g, Empty) ;;
+let (<<-) (g:'a abin) (r:'a) : 'a abin = Ab(g, r, Av) ;;
 
 (* Q7. *)
-let ex1 = Node(15, (7->>(!13)), !33) ;;
+let ex1 = Ab((7->>(!13)), 15, !33) ;;
 
-let ex2 = Node(15, ((!33)<<-7), !33) ;;
+let ex2 = Ab(((!13)<<-7), 15, !33) ;;
 
 (* Implementing --> and <-- operators *)
 let (-->) (r:'a) (d : 'a abin) : 'a abin -> 'a abin = 
-  fun (g : 'a abin) -> Node(r,g,d) ;;
+  fun (g : 'a abin) -> Ab(g,r,d) ;;
 
 let (<--) (g: 'a abin) (f: 'a  abin -> 'a abin) : 'a abin = 
   f g ;;
@@ -89,46 +93,14 @@ let ex2 = (!13 <<- 7) <-- 15 --> !33 ;;
    Exercice 6.1.4 
 *)
 
+(* Q9. *)
+
 let ex12 = ex1 <-- 1 --> ex2 ;;
-
-let rec arbreVchaine_op (nVc: 'a -> string) (a: 'a abin) : string =
-  let estSingle (a: 'a abin) : bool =
-    match a with Node( _, Empty, Empty) -> true | _ -> false
-  in
-  let parenth (a: 'a abin) (str_a: string) = 
-    if estSingle a then str_a else "(" ^str_a ^")"
-  in 
-  match a with
-  | Empty -> ""
-  | Node(r,g,d) -> let str_r = nVc r in
-    if g = Empty && d = Empty then
-      "!" ^str_r
-    else
-      let str_g = arbreVchaine_op nVc g
-      and str_d = arbreVchaine_op nVc d in
-      if g = Empty then
-        str_r ^"->>" ^parenth d str_d
-      else if d = Empty then
-        (parenth g str_g) ^"<<-" ^str_r
-      else
-        (parenth g str_g) ^"<--" ^str_r ^"-->" ^parenth d str_d
-;;
-
-arbreVchaine_op string_of_int ex1;;
-(* Output: - : string = "(7->>!13)<--15-->!33" *)
-arbreVchaine_op string_of_int ex2;;
-(* Output: - : string = "(!13<<-7)<--15-->!33" *)
-arbreVchaine_op string_of_int ex12 ;;
-(* Output: - : string = "((7->>!13)<--15-->!33)<--1-->((!13<<-7)<--15-->!33)" *)
-
-let affiche_intabin (a : int abin) : unit = 
-  Format.printf "@[%s@]" (arbreVchaine_op string_of_int a) 
-;;
-
-#install_printer affiche_intabin ;;
 
 #use "affiche_arbre_op.ml" ;;
 
+#install_printer affiche_intabin ;;
+
 arbreVchaine_op string_of_int ex1;;
 (* Output: - : string = "(7->>!13)<--15-->!33" *)
 arbreVchaine_op string_of_int ex2;;
@@ -136,11 +108,44 @@ arbreVchaine_op string_of_int ex2;;
 arbreVchaine_op string_of_int ex12 ;;
 (* Output: - : string = "((7->>!13)<--15-->!33)<--1-->((!13<<-7)<--15-->!33)" *)
 
+(*We can see that that the trees are now written as strings which is a bit more readable
+  because we got rid off the constructors.
+*)
 
-(* Q9. *)
+#remove_printer affiche_intabin ;;
 
+(*Q10*)
+let affiche_charabin (a : char abin) : unit = 
+  Format.printf ”@[%s@]” (arbreVchaine_op (String.make 1) a) ;; 
 
--------
+#install_printer affiche_charabin ;;
+
+let a4 : char abin = !’d’ <-- ’e’ --> !’g’ ;;
+(* Output: val a4 : char abin = !d<--e-->! *)
+let a3 : char abin = !’a’ <-- ’c’ --> a4 ;;
+(* Output: val a3 : char abin = !a<--c-->(!d<--e-->!g) *)
+let a2g : char abin = a3 <-- ’k’ --> !’m’ ;;
+(* Output: val a2g : char abin = (!a<--c-->(!d<--e-->!g))<--k-->!m *)
+let a2d : char abin = ’p’ ->> !’q’ <<- ’u’ ;;
+(* Output: val a2d : char abin = (p->>!q)<<-u *)
+let ex3 : char abin = a2g <-- ’n’ --> a2d ;;
+(* Output: val ex3 : char abin = ((!a<--c-->(!d<--e-->!g))<--k-->!m)<--n-->((p->>!q)<<-u) *)
+
+(*
+Tree ex3:
+       n
+      /\ 
+    k    u 
+   /\   /
+  c  m p
+ /\     \
+a  e     q   
+   /\
+  d  g
+*)
+
+#remove_printer affiche_charabin ;; 
+
 
 (*6.2 Sommes *)
 type binary_tree =
