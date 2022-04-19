@@ -197,7 +197,7 @@ somme_arbre --> 68
 let rec somme_pos_neg_0 (t:binary_tree):int*int*int  = match t with
   |Empty -> (0,0,0)
   |Node(a,lt,rt) -> let (pos1,neg1,nul1) = somme_pos_neg_0 lt and (pos2,neg2,nul2) = somme_pos_neg_0 rt in 
-    if a>0 then (a+pos1+pos2, neg2+neg1,0) else if a<0 then (pos1+pos2, neg1 + neg2 + a,0) else (pos1+pos2,neg1+neg2,1+a);;     
+    if a>0 then (a+pos1+pos2, neg2+neg1,0) else if a<0 then (pos1+pos2, neg1 + neg2 + a,0) else (pos1+pos2,neg1+neg2,1+nul1+nul2);;     
 (somme_pos_neg_0) ex1;;
 (somme_pos_neg_0) ex2;;
 
