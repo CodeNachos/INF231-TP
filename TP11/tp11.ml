@@ -109,7 +109,7 @@ arbreVchaine_op string_of_int ex12 ;;
 (* Output: - : string = "((7->>!13)<--15-->!33)<--1-->((!13<<-7)<--15-->!33)" *)
 
 (*We can see that that the trees are now written as strings which is a bit more readable
-  because we got rid off the constructors.
+  because we got rid off the constructors and its displayed using the operators we defined.
 *)
 
 #remove_printer affiche_intabin ;;
@@ -133,15 +133,18 @@ let ex3 : char abin = a2g <-- ’n’ --> a2d ;;
 
 (*
 Tree ex3:
-       n
-      /\ 
-    k    u 
-   /\   /
-  c  m p
- /\     \
-a  e     q   
-   /\
-  d  g
+                 n
+                / \
+               /   \  
+              /     \  
+             k       u 
+            / \     /  
+           c   m   p
+          /\       \
+         a  e       q
+            /\
+           d  g
+                  
 *)
 
 #remove_printer affiche_charabin ;; 
