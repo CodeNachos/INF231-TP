@@ -1,8 +1,8 @@
 (* -----------------------------------------------------------------------
-   inf201-ABDELKADER-MASCARENHAS-DOKTORCIK-TP9.ml : cr exercices TP no12
+   inf201-ABDELKADER-MASCARENHAS-DOKTORCIK-TP9.ml : cr exercices TP no9
    Youssef ABDELKADER <Youssef.Abdelkader@etu.univ-grenoble-alpes.fr>  \ 
    Rafael MASCARENHAS <Rafael.Mascarenhas@etu.univ-grenoble-alpes.fr>   > Groupe Ocaml_best_camel
-   Maxence DOKTORCIK <Maxence.Doktorcik@etu.univ-grenoble-alpes.fr>           / 
+   Maxence DOKTORCIK <Maxence.Doktorcik@etu.grenoble-inp.fr>           / 
 ----------------------------------------------------------------------- *)
 
 (* Exercice 6.4 *)
@@ -47,11 +47,11 @@ liste_trie [2;1;10;3;5];; (* Gives [1;2;3;5;10] *)
 
 (* Exercice 6.5 *)
 (* Q.1 *)
-type operation =  Sum | Min | Mult | Div;;
+type node =  Sum | Min | Mult | Div;;
 type operande = float ;;
 type expr = 
   | Av of operande 
-  | Ab of expr*operation*expr;;
+  | Ab of expr*node*expr;;
 
 (* Q.2 *)
 let expr1 = Ab(Av(1.),Sum,Ab(Av(2.),Mult,Av(3.)));;
@@ -59,12 +59,12 @@ let expr2 = Ab(Ab(Av(1.),Sum,Av(2.)),Mult,Av(3.));;
 
 (* Exercice 6.5.1 *)
 (* Specification : vrai_op
-   Profil : operation -> (float -> float -> float)
+   Profil : node -> (float -> float -> float)
    Semantic : vrai_op op will associate the real function of the name of op
    Examples: vrai_op Sum = (+.)
              vrai_op Min = (-.) 
   *) 
-let vrai_op (op:operation):(float -> float -> float) = match op with 
+let vrai_op (op:node):(float -> float -> float) = match op with 
   | Sum -> ( +. ) 
   | Min -> ( -. )
   | Mult -> ( *. ) 
@@ -76,10 +76,37 @@ let rec val_expr (a:expr) : float = match a with
   | Ab(left,op,right) -> (vrai_op(op)) (val_expr(left)) (val_expr(right));;
 
 (* Q.4 *)
-val_expr(expr1);; (* Gives 7 *)
-val_expr(expr2);; (* Gives 9 *)
+val_expr(expr1);; (* Gives 7. *)
+val_expr(expr2);; (* Gives 9. *)
 
 (* Exercice 6.5.2 *)
 (* Q.5 *)
-let convert ()
+let convert (a : node) = match a with 
+  | Sum -> "+"
+  | Min -> "-"
+  | Mult -> "*"
+  | Div -> "/";;
+
+(* Q.6 *)
+
+let rec abrVstr (t:expr) : string =match t with 
+  | Av x -> string_of_float x
+  | Ab (l,op,r) -> "(" ^ (abrVstr(l)) ^ convert(op)  ^ (abrVstr(r)) ^ ")";;
+
+let affiche (a : expr) : unit =
+  Format.printf "@[%s@]\n" (abrVstr a);;
+
+let expr1 = (!1. <-- Sum --> (!2. <-- Mult --> !3.));;
+
+(* Q.7 *)
+let estFeuille (a : expr):bool = 
+    match a with 
+      | Av(e) -> true 
+      | _ -> false;;
+
+(* Q.8 *)
+(* No need it repeats itself *)
+
+(* Q.9 / 10*)
+(* We have already done it in question 6*)
 
