@@ -1,0 +1,166 @@
+(* 6.4 Tri en arbre d'une sequence *)
+
+(* Defining tree type abr *)
+type 'a abr = | Av 
+              | Ab of 'a abr * 'a * 'a abr ;;
+
+let arb_test_1 = Ab(Ab(Ab(Av,1,Av),2,Ab(Av,4,Av)), 5, Ab(Av,9,Av));;
+let arb_test_2 = Ab(Ab(Ab(Av,1,Av),2,Ab(Av,4,Av)), 5, Ab(Ab(Av,7,Av),9,Av));;
+let arb_test_3 = Ab(Ab(Ab(Av,1,Av),2,Ab(Ab(Av,3,Av),4,Av)), 5, Ab(Av,9,Av));;
+
+(* Q1. *)
+let rec insert (e: int) (a: int abr): int abr =
+  match a with
+  | Av -> Ab(Av,e,Av)
+  | Ab(sag,l,sad) -> if e < l then Ab(insert e sag, l, sad) else Ab(sag, l, insert e sad);;
+
+(* Function tests *)
+assert((insert 7 arb_test_1) = arb_test_2) ;;
+(* Output: - : unit = () *)
+assert((insert 3 arb_test_1) = arb_test_3) ;;
+(* Output: - : unit = () *)
+
+(* Q2. *)
+let rec parcours_sym (a: 'a abr): 'a list =
+  match a with
+  | Av -> []
+  | Ab(sag,l,sad) -> (parcours_sym sag) @ (l::(parcours_sym sad));;
+
+assert((parcours_sym arb_test_1) = [1 ; 2 ; 4 ; 5 ; 9]);;
+(* Output: - : unit = () *)
+
+(* Q3. *)
+let rec seqVabr (seq: 'a list): 'a abr = 
+  match seq with
+  | [] -> Av
+  | elt::rest -> insert elt (seqVabr rest);;
+
+(* Function tests *)
+let seq_test = [10;4;7;3;9;2;1;6];;
+assert((seqVabr seq_test) = 
+  Ab (
+    Ab (
+      Av, 1, Ab (
+        Av, 2, Ab (
+          Av, 3, Ab (
+            Av, 4, Av)
+          )
+        )
+      ), 6, Ab (
+        Ab (
+          Av, 7, Av), 9, Ab (
+            Av, 10, Av)
+          )
+        )
+      );;
+(* Output: - : unit = () *)
+
+(* Q4. *)
+let seqVabr (seq: 'a list): 'a abr = 
+  List.fold_right (fun l acc_abr -> insert l acc_abr) seq Av ;;
+
+(* Function tests *)
+assert((seqVabr seq_test) = 
+  Ab (
+    Ab (
+      Av, 1, Ab (
+        Av, 2, Ab (
+          Av, 3, Ab (
+            Av, 4, Av)
+          )
+        )
+      ), 6, Ab (
+        Ab (
+          Av, 7, Av), 9, Ab (
+            Av, 10, Av)
+          )
+        )
+      );;
+(* Output: - : unit = () *)
+
+(* Q5. *)
+let tree_sort (seq: 'a list): 'a list = 
+  parcours_sym (seqVabr seq);;
+
+(* Function tests *)
+assert((tree_sort seq_test) = [1; 2; 3; 4; 6; 7; 9; 10]);;
+
+(* 6.5 Expressions arithmétiques *)
+
+(* Q1. *)
+type node = Plus | Min | Div | Mult ;;
+type exprarith = F of float | Ni of exprarith * node * exprarith ;;
+
+(* Q2. *)
+let expr_1 = Ni(F 1., Plus, Ni(F 2., Mult, F 3.));;
+(* Output: val expr_1 : exprarith = Ni (F 1., Plus, Ni (F 2., Mult, F 3.)) *)
+let expr_2 = Ni(Ni(F 1., Plus, F 2.), Mult, F 3.);;
+(* Output: val expr_2 : exprarith = Ni (Ni (F 1., Plus, F 2.), Mult, F 3.) *)
+
+(* Q3. *)
+let rec val_expr (a: exprarith): float =
+  match a with
+  | F x -> x
+  | Ni(x,op,y) -> match op with
+                  | Plus -> (val_expr x) +. (val_expr y)
+                  | Min -> (val_expr x) -. (val_expr y)
+                  | Div -> (val_expr x) /. (val_expr y)
+                  | Mult -> (val_expr x) *. (val_expr y) ;;
+
+(* Q4. *)
+assert((val_expr expr_1) = 7.);;
+(* Output: - : unit = () *)
+assert((val_expr expr_2) = 9.);;
+(* Output: - : unit = () *)
+
+(* Q5. *)
+let nodeVstr (n: node): string =
+  match n with
+  | Plus -> " + "
+  | Min -> " - "
+  | Div -> " / "
+  | Mult -> " * ";;
+
+(* Q6. *)
+let (!) (x:float): exprarith = F x;;
+let (-->) (r:node) (d:exprarith): (exprarith -> exprarith) =
+  fun g -> Ni(g, r, d) ;;
+let (<--) (g:exprarith) (fa: (exprarith -> exprarith)): exprarith =
+  fa g ;;
+
+let rec exprarithVstr (a:exprarith): string =
+  match a with
+  | F x -> string_of_float x
+  | Ni(x,op,y) -> "(" ^ (exprarithVstr x) ^ (nodeVstr op) ^ (exprarithVstr y) ^ ")";;
+(*
+let rec exprarithVstr (a:exprarith): string =
+  match a with
+  | F x -> string_of_float x
+  | Ni(x,op,y) -> let str_sag = exprarithVstr x and str_sad = exprarithVstr y
+                  in let str_sag = if Float.of_string_opt str_sag = None then "(" ^ str_sag ^ ")"
+                                   else str_sag
+                  and str_sad = if Float.of_string_opt str_sad = None then "(" ^ str_sad ^ ")"
+                                else str_sad
+                  in str_sag ^ (nodeVstr op) ^ str_sad ;;
+*)
+let affiche_exprarith (a : exprarith) : unit = 
+  Format.printf "@[%s@]\n"  (exprarithVstr a);;
+
+let expr_1 = !1. <-- Plus --> (!2. <-- Mult --> !3.);;
+affiche_exprarith expr_1;;
+(* Output: (1. + (2. * 3.)) *)
+let expr_2 = (!1. <-- Plus --> !2.) <-- Mult --> !3.;;
+affiche_exprarith expr_2;;
+(* Output: ((1. + 2.) * 3.) *)
+
+(* Q7. *)
+let estFeuille (expr: exprarith): bool =
+  match expr with
+  | F _ -> true
+  | _ -> false ;;
+
+(* Q8 *)
+let parenth (a: exprarith) (a_str: string): string = 
+  if estFeuille a then a_str else "("^a_str^")" ;; 
+
+(* Q9./Q10. Were already done in Q6.*)
